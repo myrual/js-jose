@@ -33,10 +33,12 @@ class fetch:
         print(payload)
         result = json.loads(payload)
         result["use"] = "enc"
-        public_key = jwk.JWK(**)
-        public_key
-        print(result)
-        return json.dumps([{"type":"ss", "server":"1.1.1.1", "port":1984, "method":"aes-cfb-256", "key":"romanholidy3947"},{"type":"ss", "server":"2.2.1.1", "port":11984, "method":"aes-cfb-256", "key":"juventus_suck"}])
+        public_key = jwk.JWK(**result)
+        toclient_payload = json.dumps([{"type":"ss", "server":"1.1.1.1", "port":1984, "method":"aes-cfb-256", "key":"romanholidy3947"},{"type":"ss", "server":"2.2.1.1", "port":11984, "method":"aes-cfb-256", "key":"juventus_suck"}])
+        protected_header = {"alg": "RSA-OAEP","enc": "A256GCM","typ": "JWE"}
+        jweresult = jwe.JWE(toclient_payload.encode('utf-8'), recipient=public_key, protected=protected_header)
+        print(jweresult.serialize(True))
+        return  jweresult.serialize(True)
 
 if __name__ == "__main__":
     app = web.application(urls, globals())

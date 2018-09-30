@@ -1,41 +1,58 @@
 <html>
+	<head>
+    <meta charset="utf-8" />
+
+    <title>Big Nerd Ranch D3 Blog Post</title>
+    <header name = "Access-Control-Allow-Origin" value = "*" />
+</head>
 <body>
-<p>plain text: <span id="plaintext">hello world, I love you</span></p>
+<p>plain text: <span id="plaintext">hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello </span></p>
+
 <p>cipher text: <pre style="word-wrap: break-word" id="ciphertext"></pre></p>
+<p>decrypt response text: <pre style="word-wrap: break-word" id="decrypttext"></pre></p>
+
 <p>error: <span id="error" style="color: red"></span></p>
 <script src="../dist/jose.js"></script>
 
 <script>
-var python_pub_rsa_key = 
-	{"e":"AQAB","kty":"RSA","n":"qbhFH2beRQa_8SpxxfhCSVtkISsy6CmVftGaaNvf5hbHSO_Qbwua7n_o292dhkRdS_Nz_qY43DGds4DYvbs1AZwrd2NNnrhxb1E59MnIjsiG4lXzRCElrFfQiXn8bSINyf4wEKx4wAjGo58NhPJsIFzEifIZDCsm6JBc6e7fFOsTrX6cyyrdjCUXQgq6CJ6zbx0xdnEDq4nmk_eHljUypkmKnS4emihQdU6j1ewOHPRQFwTegR6-S2JY7TrtNHrKr5vmH5qvGqX-bX06sOh8YwKntDU-CoN0ROzIFoDdI5WIniXq3CKTd8wtxIRhT-N28ofdvUGcvA_BtFdGbBwvUQ"}
+var server_pub_rsa_key = 
+	{"e":"AQAB","kty":"RSA","n":"nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ"}
 
-var python_priv_rsa_key = 
-{"d":"B9Vyk1V7MvJxz57m631fCeXHBGTrD55DwTvJhceIWSV6A1rWYxnFB_ctd2COUdE8ATJ2iy1--GLt5Ygv-On4M1_S_cq-nXHkAoBcTXk24ahN2YqgFOf2xjKzdHUF-r-UpVsvOsXLOQnuqUTBKf7KkN_XToq3L0GapSdssnuNHnj8CRD6aPGp496USi-Ln8UamqJOv2NthyeXL5dMp2bkQlz0I9DGgUqwZrckezWB3Ythbz5hnq7yGHL6EHA5K4VLcXRf5F9tDStnbQYJC_mN84a8SPaII-BmYK3ufh1-XkpPwifkTsmi25T6IKpR4DeR00s0QZuborx9Sk2wWTkUAQ","dp":"vTK7joAoopD40PDQpcd8cEGdceF5cIOCbi5YjXvKnWzu3e3GjChGiev1XQ_FhhJkF1NDzRFDXwpyP5LhTlp-Zwxu2UiPiakX8que_jZAHGR8Uo5U1mSkPYzAG0jYh_zOY8JWD_zrAQ1VhbTZZdIjZ6gvdu9YuWY4But3gLUq5JE","dq":"TjTc36Ej6T4T-WeUMawk6VQgv5Pi3k1Czuo622y8e8NYxooEh9DBbce2hhac7FVYS1nPVAiFcWvglK78mHba-ylXlM7hRGWJJ9Rp2-528XWcSj1KoWtcGqQYM0BfHg2SqJLKL5RZrNsgkdYDUczwhPcJB_aUSwD6Rnti4i4xkYE","e":"AQAB","kty":"RSA","n":"qbhFH2beRQa_8SpxxfhCSVtkISsy6CmVftGaaNvf5hbHSO_Qbwua7n_o292dhkRdS_Nz_qY43DGds4DYvbs1AZwrd2NNnrhxb1E59MnIjsiG4lXzRCElrFfQiXn8bSINyf4wEKx4wAjGo58NhPJsIFzEifIZDCsm6JBc6e7fFOsTrX6cyyrdjCUXQgq6CJ6zbx0xdnEDq4nmk_eHljUypkmKnS4emihQdU6j1ewOHPRQFwTegR6-S2JY7TrtNHrKr5vmH5qvGqX-bX06sOh8YwKntDU-CoN0ROzIFoDdI5WIniXq3CKTd8wtxIRhT-N28ofdvUGcvA_BtFdGbBwvUQ","p":"2FEJLux-JuywvXnkC4XoSLL0UacmGZzbeHeK08YjUHIHeJv5s9kfFtig2tMxyFx5rnSa-W9mObNuLsPOQN-TP702vUvnluOkpBBab_PF-H2gAHnwZhVQoH9TicKpfci6wYlF5B5B9HPFr8XmuZliSwBgLXEFgEY_s0VB4T_k9hE","q":"yNrkVhiN1pEyfx9qp3Wz7lqXSBjne7zWAds4S__WrDCZ3ymqBd8lr6JNi-EhmNovZhaJ-vuAFvd-JlGDjk9y7aT50lvBMQuNclysedVfSNGb4LcyDCOHbw7Glu3dmBLyo3-JPkjtF2xNGLmbJ7W0iY5gQiC_WUdXX90aFEaVZUE","qi":"AbWp65hKgbM4OQ23K7oQgjvtWMnSGT8OKSMZ27eHKVgUleM4VMtj7a69qL0FRNDw-uSkZcwXnahK1TrwA22Z54fB0mBPT0BXHlQ3UBKQmOKRrtdIoBECGuQ4t9eRc9-2x6V5mRuxu_lpABKhOi7mF9HZw8xbxWsqVvuW16nf3-g"}	
-	
-	
-
+var server_priv_rsa_key = 
+	{"d":"djzmjvd5gxoz0t3FT7RmZ7fFABO7vmUjKKbzj6OOPZqqY2Bwutjs03dbGAoBNzX3OReI_pmplpOQo4OBrPbcVwy2XsEz8DlhM-ZXC_zdY1sinhlvxg2FyJv-9hW-9fB3xUjL5q2jZgxVSOIrgjIuZiVmFJihfn-XS57nzkQssa5OTd7awDT118CX1Ugs3Yg5Q-C9Au0dMig2F9X0TFKEfp_efpckUb5WlX7T42IliX4k91N1sXeTes2MltJ2JvcOm7XQtt54Ap3UXqjI7cTDcZN0qsPCUmUwAoBzXY9YjTOLuVTS3T6RDi3WqNgILbLK_1ZooogM64Nzr3DR4yeXAQ","dp":"ddhsudpiQw1gGKRmgU-JgjrGdIsjyTKdPoACoSdoCvXgjoOmSh1gJbS2chaLPE9_1htooYiVwEC_4QcBdM3QOlRwHekjOR_n0RFez3eJF2jMnwYka_H4qZDF3LNUvIwwSNNONoWnJKd50-vxTQFOfL4dPzESsuVPi4mtGB_OGYE","dq":"PvGRC32t1MpuBpB1ooXkaY7aj8ctZWv1ibqlXWQ-lfR-6imLLpyJKQmb552UhOsARFx8veYsUwnb38i_IuxunG_JE8F0V4vKb4iI45p2X2UrzHQC-1oPhCH01OtLE8N4AlsJZ6sOFg4yMGqWbIQ76iV9s5x_YiKyFhJkC1FzHw0","e":"AQAB","kty":"RSA","n":"nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ","p":"0LmLpVVOc9Bd6ZZcnBGeyvbi1y2DMRjFfZuiMU1CwK5Q-jQkyouFbLlVxJANoqyFmClH-SUs4SWRkIxhcIEbcJ_rGDWyHOLEzD5gc0d48VT5SayH5QjDWUz4xf1FK7e_m_R7G35NedqL3HNv_XjV9phOBcW0Hf-2ZH5PMDNoBcE","q":"wh1q2mM07Qeoy52bTZwfK3Fe-Fjq0UOOZdffz-4Gv5m2L-DXAfXOUKwuCEgi0gNETtdhZonpMtOMIe4uqgTcdhWhMEbVpQCdOQDuw1y4uBzzNtJArpcfJHuDIvjz5_AMNoj3OgJoBdV6lJc95WjGBlp3oouz_ogB78qKAEhz8QU","qi":"e8tF0pisWwcZSH1j4WiGcZoYy6yXAinOfdNfdYhqC6WvCzw0y--n8-xW9CJ5JPPdJ-rXlUnOMOdyRyOtieKLrv4QvOASEMkJut0oztxlqaRxu26QyuWB1QeokJfrKfbH5OgzASOomQesPbFiU_5U7jltVfrgj0atKCcORfwM-t8"}
+var js_pub_key = {"e":"AQAB","kty":"RSA","n":"yfTdA3PJzyo2LT899lspEA8QESzDDMO-rRu7VtIKCSgBliCCI4etuVHU--2h3JXFHaNttfFTm2uA1ps1G86q90tvTol7MBqSZgD51dlBP_V5vDtdkmi_sS38Szfz_Qu6CS2-JxDmLdrBPJAXJjOW13Sz6e-cjT3TCsmV3n4zqyYbLSHOBdLpLAcH6JWtqsJE8bED68C5EZzfBtWoOXWtsNJgsGIQ2hugdh-VAm4lCPaSIOdQKGczfvSRFcsTMCKox9norysq3rfKqh0b_UBfcBDhFtFnVrCFGVtsbKV9OIf404J_QOpH8pjeyAVcocBN4TzJilrOfiDlcSvaztkaEQ"}
+var js_priv_key  = {"d":"iQ5AH2OpBYqkEbjlmBbtmxRd1woFpNgCwwAa9yS74tLfoL6XEv21DBtY60-tlUGe8CpE_kC0eLlQSlQyipiKtiDffPEYROEDkW4AHvy9p2Y0I2Y2bnHgBaIrofBrCMO4kRoV_fUeAOiAU1WGIErKh5WPs6cFG2Vln-CGcOQ8tFyG-PCpwrhNlQJP5XnkbL56H9e9R-AnuKVSDm3TFM_gtKGfMpEM1g3Y7rK9LoV-l24FyEBFGth5wcr2Mb4ZxOEYslKAxhztelaU0WFnzguByMkgZAmfJDGy64XsZzdEbYqM5aPhCMEyFIQ3BVcTtr_llbo94gm6osB5klewTpD3AQ","dp":"O6BCOMXuTCuigTJPl2-jW3udnu4kbJsoItxP2Izg914jJbEjSz6BGvezg1MXZ3eiAemhHeh5vMi0YGtw75lKIWdsHPARi2lhhjHKVd7ZPwTViK61l8L86azOL2T7O8Y244kNCXisgUmLpRyZi20QfUTIV8cI0j7hQiZEXU9M35E","dq":"af5cgcHR9IMBZiChaHKcA4zMgzTxiLs-XcDZiLADGAdmh-sI1WJEZug38z6QrzCm84neo7wA4PjWgJV0PxP0FtfR67krlIa4YhY6J9ZzOXm0qYURwGpMhjxLTqvWlgBxz-Qj7rT0yedyxEoX0FwwTr8UDoyt6UaJhb79zaqMxkE","e":"AQAB","kty":"RSA","n":"yfTdA3PJzyo2LT899lspEA8QESzDDMO-rRu7VtIKCSgBliCCI4etuVHU--2h3JXFHaNttfFTm2uA1ps1G86q90tvTol7MBqSZgD51dlBP_V5vDtdkmi_sS38Szfz_Qu6CS2-JxDmLdrBPJAXJjOW13Sz6e-cjT3TCsmV3n4zqyYbLSHOBdLpLAcH6JWtqsJE8bED68C5EZzfBtWoOXWtsNJgsGIQ2hugdh-VAm4lCPaSIOdQKGczfvSRFcsTMCKox9norysq3rfKqh0b_UBfcBDhFtFnVrCFGVtsbKV9OIf404J_QOpH8pjeyAVcocBN4TzJilrOfiDlcSvaztkaEQ","p":"7y3gXWO794Gf3jr9jTptKvLC5kSOsY3w_UfWdZdq5dGYtRNJzpOriS3S26hL4MWz_446WBWuKjgc-VJ4sul-vd6uHpa2QOpcMJApvKRSktHZChA0v8wtc1HCNGJRLV5mgKw-FrcrjycX08EteMlAT45Es56cZYfHm5Xt0T0MnIk","q":"2CjWpAaHqoPWxrlBxu5BTsaUnc4S-QchZuqU0d9WSiMKIKRMu7UBSLAjZbMsh18Rr7UzByih2RM99MBfgJtlm0Z9kxyLjGnkqqfVKJms5YcnmfvBltDAmAAjxpK_Exxr9bkp5IoxUTmFWeWVyHXG27u0Zfj2K18K3jpG1xa0_0k","qi":"bx8lw3-6-LqNzlMbp4VXsHAMUQ0LdNGwFtV-2-wemd4MMVLB7BawY73AWPaaaMOpyVBuqtfvxWnCspxm2HDUTrLsfJzswDOmGCJzzaFSSoyJhdX03dS_bhALrTdyX958Y58hSv6Pt1sBdZd55KjZ4aiNV3Jatr3pbtwvFgqc1N0"}
 var cryptographer = new Jose.WebCryptographer();
 
 
-var public_rsa_key = Jose.Utils.importRsaPublicKey(python_pub_rsa_key, "RSA-OAEP");
-var private_rsa_key = Jose.Utils.importRsaPrivateKey(python_priv_rsa_key, "RSA-OAEP");
+var public_rsa_key = Jose.Utils.importRsaPublicKey(server_pub_rsa_key, "RSA-OAEP");
+var private_rsa_key = Jose.Utils.importRsaPrivateKey(js_priv_key, "RSA-OAEP");
 
 var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
-console.log(plaintext.textContent);
-encrypter.encrypt(plaintext.textContent).then(function(result) {
+js_pub_key_in_string = JSON.stringify(js_pub_key)
+console.log(js_pub_key_in_string);
+encrypter.encrypt(js_pub_key_in_string).then(function(result) {
 	console.log(result);
-
+	plaintext.textContent = js_pub_key_in_string
 	ciphertext.textContent = result;
-
+	const url='http://127.0.0.1:8080/?' + "code=" + result;
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		console.log("result")
+		console.log(xmlhttp.responseText);
   var decrypter = new JoseJWE.Decrypter(cryptographer, private_rsa_key);
-  decrypter.decrypt(result)
+  decrypter.decrypt(xmlhttp.responseText)
     .then(function(decrypted_plain_text) {
-      if (decrypted_plain_text != plaintext.textContent) {
-        error.textContent = "decryption failed!";
-      }
+	    console.log(decrypted_plain_text)
+	    decrypttext.textContent = decrypted_plain_text 
     }).catch(function(err) {
       error.textContent = err;
     });
+
+    	}
+	xmlhttp.open("GET", url, false);
+	xmlhttp.send();
+
 }).catch(function(err){
 	error.textContent = err;
 });

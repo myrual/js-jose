@@ -6,7 +6,7 @@
     <header name = "Access-Control-Allow-Origin" value = "*" />
 </head>
 <body>
-<p>plain text: <span id="plaintext">hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello hello world, I love youhello </span></p>
+<p>plain text: <span id="plaintext">hello world </span></p>
 
 <p>cipher text: <pre style="word-wrap: break-word" id="ciphertext"></pre></p>
 <p>decrypt response text: <pre style="word-wrap: break-word" id="decrypttext"></pre></p>
@@ -16,24 +16,57 @@
 
 <script>
 var server_pub_rsa_key = 
-	{"e":"AQAB","kty":"RSA","n":"nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ"}
+	{"use":"enc","e":"AQAB","kty":"RSA","n":"nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ"}
+var server_pub_sig_rsa_key = {
+                "alg": "RS256",
+		    "algorithm":"RS256",
+                "e": "AQAB",
+                "ext": true,
+                "key_ops": ["verify"],
+                "kid": "76d4d722-4398-4fc4-a47e-df3d15de7fab",
+                "kty": "RSA",
+                "n": "nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ"
+            };
 
 var server_priv_rsa_key = 
 	{"d":"djzmjvd5gxoz0t3FT7RmZ7fFABO7vmUjKKbzj6OOPZqqY2Bwutjs03dbGAoBNzX3OReI_pmplpOQo4OBrPbcVwy2XsEz8DlhM-ZXC_zdY1sinhlvxg2FyJv-9hW-9fB3xUjL5q2jZgxVSOIrgjIuZiVmFJihfn-XS57nzkQssa5OTd7awDT118CX1Ugs3Yg5Q-C9Au0dMig2F9X0TFKEfp_efpckUb5WlX7T42IliX4k91N1sXeTes2MltJ2JvcOm7XQtt54Ap3UXqjI7cTDcZN0qsPCUmUwAoBzXY9YjTOLuVTS3T6RDi3WqNgILbLK_1ZooogM64Nzr3DR4yeXAQ","dp":"ddhsudpiQw1gGKRmgU-JgjrGdIsjyTKdPoACoSdoCvXgjoOmSh1gJbS2chaLPE9_1htooYiVwEC_4QcBdM3QOlRwHekjOR_n0RFez3eJF2jMnwYka_H4qZDF3LNUvIwwSNNONoWnJKd50-vxTQFOfL4dPzESsuVPi4mtGB_OGYE","dq":"PvGRC32t1MpuBpB1ooXkaY7aj8ctZWv1ibqlXWQ-lfR-6imLLpyJKQmb552UhOsARFx8veYsUwnb38i_IuxunG_JE8F0V4vKb4iI45p2X2UrzHQC-1oPhCH01OtLE8N4AlsJZ6sOFg4yMGqWbIQ76iV9s5x_YiKyFhJkC1FzHw0","e":"AQAB","kty":"RSA","n":"nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ","p":"0LmLpVVOc9Bd6ZZcnBGeyvbi1y2DMRjFfZuiMU1CwK5Q-jQkyouFbLlVxJANoqyFmClH-SUs4SWRkIxhcIEbcJ_rGDWyHOLEzD5gc0d48VT5SayH5QjDWUz4xf1FK7e_m_R7G35NedqL3HNv_XjV9phOBcW0Hf-2ZH5PMDNoBcE","q":"wh1q2mM07Qeoy52bTZwfK3Fe-Fjq0UOOZdffz-4Gv5m2L-DXAfXOUKwuCEgi0gNETtdhZonpMtOMIe4uqgTcdhWhMEbVpQCdOQDuw1y4uBzzNtJArpcfJHuDIvjz5_AMNoj3OgJoBdV6lJc95WjGBlp3oouz_ogB78qKAEhz8QU","qi":"e8tF0pisWwcZSH1j4WiGcZoYy6yXAinOfdNfdYhqC6WvCzw0y--n8-xW9CJ5JPPdJ-rXlUnOMOdyRyOtieKLrv4QvOASEMkJut0oztxlqaRxu26QyuWB1QeokJfrKfbH5OgzASOomQesPbFiU_5U7jltVfrgj0atKCcORfwM-t8"}
-var js_pub_key = {"use":"enc", "alg":"RSA-OAEP", "enc":"A256CBC-HS512", "e":"AQAB","kty":"RSA","n":"yfTdA3PJzyo2LT899lspEA8QESzDDMO-rRu7VtIKCSgBliCCI4etuVHU--2h3JXFHaNttfFTm2uA1ps1G86q90tvTol7MBqSZgD51dlBP_V5vDtdkmi_sS38Szfz_Qu6CS2-JxDmLdrBPJAXJjOW13Sz6e-cjT3TCsmV3n4zqyYbLSHOBdLpLAcH6JWtqsJE8bED68C5EZzfBtWoOXWtsNJgsGIQ2hugdh-VAm4lCPaSIOdQKGczfvSRFcsTMCKox9norysq3rfKqh0b_UBfcBDhFtFnVrCFGVtsbKV9OIf404J_QOpH8pjeyAVcocBN4TzJilrOfiDlcSvaztkaEQ"}
-var js_priv_key  = {"d":"iQ5AH2OpBYqkEbjlmBbtmxRd1woFpNgCwwAa9yS74tLfoL6XEv21DBtY60-tlUGe8CpE_kC0eLlQSlQyipiKtiDffPEYROEDkW4AHvy9p2Y0I2Y2bnHgBaIrofBrCMO4kRoV_fUeAOiAU1WGIErKh5WPs6cFG2Vln-CGcOQ8tFyG-PCpwrhNlQJP5XnkbL56H9e9R-AnuKVSDm3TFM_gtKGfMpEM1g3Y7rK9LoV-l24FyEBFGth5wcr2Mb4ZxOEYslKAxhztelaU0WFnzguByMkgZAmfJDGy64XsZzdEbYqM5aPhCMEyFIQ3BVcTtr_llbo94gm6osB5klewTpD3AQ","dp":"O6BCOMXuTCuigTJPl2-jW3udnu4kbJsoItxP2Izg914jJbEjSz6BGvezg1MXZ3eiAemhHeh5vMi0YGtw75lKIWdsHPARi2lhhjHKVd7ZPwTViK61l8L86azOL2T7O8Y244kNCXisgUmLpRyZi20QfUTIV8cI0j7hQiZEXU9M35E","dq":"af5cgcHR9IMBZiChaHKcA4zMgzTxiLs-XcDZiLADGAdmh-sI1WJEZug38z6QrzCm84neo7wA4PjWgJV0PxP0FtfR67krlIa4YhY6J9ZzOXm0qYURwGpMhjxLTqvWlgBxz-Qj7rT0yedyxEoX0FwwTr8UDoyt6UaJhb79zaqMxkE","e":"AQAB","kty":"RSA","n":"yfTdA3PJzyo2LT899lspEA8QESzDDMO-rRu7VtIKCSgBliCCI4etuVHU--2h3JXFHaNttfFTm2uA1ps1G86q90tvTol7MBqSZgD51dlBP_V5vDtdkmi_sS38Szfz_Qu6CS2-JxDmLdrBPJAXJjOW13Sz6e-cjT3TCsmV3n4zqyYbLSHOBdLpLAcH6JWtqsJE8bED68C5EZzfBtWoOXWtsNJgsGIQ2hugdh-VAm4lCPaSIOdQKGczfvSRFcsTMCKox9norysq3rfKqh0b_UBfcBDhFtFnVrCFGVtsbKV9OIf404J_QOpH8pjeyAVcocBN4TzJilrOfiDlcSvaztkaEQ","p":"7y3gXWO794Gf3jr9jTptKvLC5kSOsY3w_UfWdZdq5dGYtRNJzpOriS3S26hL4MWz_446WBWuKjgc-VJ4sul-vd6uHpa2QOpcMJApvKRSktHZChA0v8wtc1HCNGJRLV5mgKw-FrcrjycX08EteMlAT45Es56cZYfHm5Xt0T0MnIk","q":"2CjWpAaHqoPWxrlBxu5BTsaUnc4S-QchZuqU0d9WSiMKIKRMu7UBSLAjZbMsh18Rr7UzByih2RM99MBfgJtlm0Z9kxyLjGnkqqfVKJms5YcnmfvBltDAmAAjxpK_Exxr9bkp5IoxUTmFWeWVyHXG27u0Zfj2K18K3jpG1xa0_0k","qi":"bx8lw3-6-LqNzlMbp4VXsHAMUQ0LdNGwFtV-2-wemd4MMVLB7BawY73AWPaaaMOpyVBuqtfvxWnCspxm2HDUTrLsfJzswDOmGCJzzaFSSoyJhdX03dS_bhALrTdyX958Y58hSv6Pt1sBdZd55KjZ4aiNV3Jatr3pbtwvFgqc1N0"}
+var js_pub_key = {"kid":"hello", "use":"enc", "alg":"RSA-OAEP", "enc":"A256CBC-HS512", "e":"AQAB","kty":"RSA","n":"yfTdA3PJzyo2LT899lspEA8QESzDDMO-rRu7VtIKCSgBliCCI4etuVHU--2h3JXFHaNttfFTm2uA1ps1G86q90tvTol7MBqSZgD51dlBP_V5vDtdkmi_sS38Szfz_Qu6CS2-JxDmLdrBPJAXJjOW13Sz6e-cjT3TCsmV3n4zqyYbLSHOBdLpLAcH6JWtqsJE8bED68C5EZzfBtWoOXWtsNJgsGIQ2hugdh-VAm4lCPaSIOdQKGczfvSRFcsTMCKox9norysq3rfKqh0b_UBfcBDhFtFnVrCFGVtsbKV9OIf404J_QOpH8pjeyAVcocBN4TzJilrOfiDlcSvaztkaEQ"}
+var js_priv_key  = {"kid":"hello","d":"iQ5AH2OpBYqkEbjlmBbtmxRd1woFpNgCwwAa9yS74tLfoL6XEv21DBtY60-tlUGe8CpE_kC0eLlQSlQyipiKtiDffPEYROEDkW4AHvy9p2Y0I2Y2bnHgBaIrofBrCMO4kRoV_fUeAOiAU1WGIErKh5WPs6cFG2Vln-CGcOQ8tFyG-PCpwrhNlQJP5XnkbL56H9e9R-AnuKVSDm3TFM_gtKGfMpEM1g3Y7rK9LoV-l24FyEBFGth5wcr2Mb4ZxOEYslKAxhztelaU0WFnzguByMkgZAmfJDGy64XsZzdEbYqM5aPhCMEyFIQ3BVcTtr_llbo94gm6osB5klewTpD3AQ","dp":"O6BCOMXuTCuigTJPl2-jW3udnu4kbJsoItxP2Izg914jJbEjSz6BGvezg1MXZ3eiAemhHeh5vMi0YGtw75lKIWdsHPARi2lhhjHKVd7ZPwTViK61l8L86azOL2T7O8Y244kNCXisgUmLpRyZi20QfUTIV8cI0j7hQiZEXU9M35E","dq":"af5cgcHR9IMBZiChaHKcA4zMgzTxiLs-XcDZiLADGAdmh-sI1WJEZug38z6QrzCm84neo7wA4PjWgJV0PxP0FtfR67krlIa4YhY6J9ZzOXm0qYURwGpMhjxLTqvWlgBxz-Qj7rT0yedyxEoX0FwwTr8UDoyt6UaJhb79zaqMxkE","e":"AQAB","kty":"RSA","n":"yfTdA3PJzyo2LT899lspEA8QESzDDMO-rRu7VtIKCSgBliCCI4etuVHU--2h3JXFHaNttfFTm2uA1ps1G86q90tvTol7MBqSZgD51dlBP_V5vDtdkmi_sS38Szfz_Qu6CS2-JxDmLdrBPJAXJjOW13Sz6e-cjT3TCsmV3n4zqyYbLSHOBdLpLAcH6JWtqsJE8bED68C5EZzfBtWoOXWtsNJgsGIQ2hugdh-VAm4lCPaSIOdQKGczfvSRFcsTMCKox9norysq3rfKqh0b_UBfcBDhFtFnVrCFGVtsbKV9OIf404J_QOpH8pjeyAVcocBN4TzJilrOfiDlcSvaztkaEQ","p":"7y3gXWO794Gf3jr9jTptKvLC5kSOsY3w_UfWdZdq5dGYtRNJzpOriS3S26hL4MWz_446WBWuKjgc-VJ4sul-vd6uHpa2QOpcMJApvKRSktHZChA0v8wtc1HCNGJRLV5mgKw-FrcrjycX08EteMlAT45Es56cZYfHm5Xt0T0MnIk","q":"2CjWpAaHqoPWxrlBxu5BTsaUnc4S-QchZuqU0d9WSiMKIKRMu7UBSLAjZbMsh18Rr7UzByih2RM99MBfgJtlm0Z9kxyLjGnkqqfVKJms5YcnmfvBltDAmAAjxpK_Exxr9bkp5IoxUTmFWeWVyHXG27u0Zfj2K18K3jpG1xa0_0k","qi":"bx8lw3-6-LqNzlMbp4VXsHAMUQ0LdNGwFtV-2-wemd4MMVLB7BawY73AWPaaaMOpyVBuqtfvxWnCspxm2HDUTrLsfJzswDOmGCJzzaFSSoyJhdX03dS_bhALrTdyX958Y58hSv6Pt1sBdZd55KjZ4aiNV3Jatr3pbtwvFgqc1N0"}
 var cryptographer = new Jose.WebCryptographer();
+var js_sig_priv_key  = {"kid":"hello","d":"iQ5AH2OpBYqkEbjlmBbtmxRd1woFpNgCwwAa9yS74tLfoL6XEv21DBtY60-tlUGe8CpE_kC0eLlQSlQyipiKtiDffPEYROEDkW4AHvy9p2Y0I2Y2bnHgBaIrofBrCMO4kRoV_fUeAOiAU1WGIErKh5WPs6cFG2Vln-CGcOQ8tFyG-PCpwrhNlQJP5XnkbL56H9e9R-AnuKVSDm3TFM_gtKGfMpEM1g3Y7rK9LoV-l24FyEBFGth5wcr2Mb4ZxOEYslKAxhztelaU0WFnzguByMkgZAmfJDGy64XsZzdEbYqM5aPhCMEyFIQ3BVcTtr_llbo94gm6osB5klewTpD3AQ","dp":"O6BCOMXuTCuigTJPl2-jW3udnu4kbJsoItxP2Izg914jJbEjSz6BGvezg1MXZ3eiAemhHeh5vMi0YGtw75lKIWdsHPARi2lhhjHKVd7ZPwTViK61l8L86azOL2T7O8Y244kNCXisgUmLpRyZi20QfUTIV8cI0j7hQiZEXU9M35E","dq":"af5cgcHR9IMBZiChaHKcA4zMgzTxiLs-XcDZiLADGAdmh-sI1WJEZug38z6QrzCm84neo7wA4PjWgJV0PxP0FtfR67krlIa4YhY6J9ZzOXm0qYURwGpMhjxLTqvWlgBxz-Qj7rT0yedyxEoX0FwwTr8UDoyt6UaJhb79zaqMxkE","e":"AQAB","kty":"RSA","n":"yfTdA3PJzyo2LT899lspEA8QESzDDMO-rRu7VtIKCSgBliCCI4etuVHU--2h3JXFHaNttfFTm2uA1ps1G86q90tvTol7MBqSZgD51dlBP_V5vDtdkmi_sS38Szfz_Qu6CS2-JxDmLdrBPJAXJjOW13Sz6e-cjT3TCsmV3n4zqyYbLSHOBdLpLAcH6JWtqsJE8bED68C5EZzfBtWoOXWtsNJgsGIQ2hugdh-VAm4lCPaSIOdQKGczfvSRFcsTMCKox9norysq3rfKqh0b_UBfcBDhFtFnVrCFGVtsbKV9OIf404J_QOpH8pjeyAVcocBN4TzJilrOfiDlcSvaztkaEQ","p":"7y3gXWO794Gf3jr9jTptKvLC5kSOsY3w_UfWdZdq5dGYtRNJzpOriS3S26hL4MWz_446WBWuKjgc-VJ4sul-vd6uHpa2QOpcMJApvKRSktHZChA0v8wtc1HCNGJRLV5mgKw-FrcrjycX08EteMlAT45Es56cZYfHm5Xt0T0MnIk","q":"2CjWpAaHqoPWxrlBxu5BTsaUnc4S-QchZuqU0d9WSiMKIKRMu7UBSLAjZbMsh18Rr7UzByih2RM99MBfgJtlm0Z9kxyLjGnkqqfVKJms5YcnmfvBltDAmAAjxpK_Exxr9bkp5IoxUTmFWeWVyHXG27u0Zfj2K18K3jpG1xa0_0k","qi":"bx8lw3-6-LqNzlMbp4VXsHAMUQ0LdNGwFtV-2-wemd4MMVLB7BawY73AWPaaaMOpyVBuqtfvxWnCspxm2HDUTrLsfJzswDOmGCJzzaFSSoyJhdX03dS_bhALrTdyX958Y58hSv6Pt1sBdZd55KjZ4aiNV3Jatr3pbtwvFgqc1N0"}
+js_sig_priv_key["alg"] = "RS256";
+js_sig_priv_key["kid"] = "hello";
+
 
 
 var public_rsa_key = Jose.Utils.importRsaPublicKey(server_pub_rsa_key, "RSA-OAEP");
-var private_rsa_key = Jose.Utils.importRsaPrivateKey(js_priv_key, "RSA-OAEP");
+var pubjwk = {
+                "alg": "RS256",
+                "e": "AQAB",
+                "ext": true,
+                "key_ops": ["verify"],
+                "kid": "hello",
+                "kty": "RSA",
+                "n": "nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ"
+            };
 
+var private_rsa_key = Jose.Utils.importRsaPrivateKey(js_priv_key, "RSA-OAEP");
+var js_private_rsa_key = Jose.Utils.importRsaPrivateKey(js_sig_priv_key, "RS256");
+
+
+var pubjwks = {};
+pubjwks[js_sig_priv_key.kid] = js_sig_priv_key;
+var keyfinder = function (kid) {
+   		return window.crypto.subtle.importKey("jwk", js_sig_priv_key,
+                            {name: "RSASSA-PKCS1-v1_5", hash: {name: "SHA-256"}},
+                            true, ['verify']);
+};
 var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
-js_pub_key_in_string = JSON.stringify(js_pub_key)
-console.log(js_pub_key_in_string);
-encrypter.encrypt(js_pub_key_in_string).then(function(result) {
+to_encrypt_in_string = JSON.stringify(js_pub_key)
+console.log(to_encrypt_in_string);
+encrypter.encrypt(to_encrypt_in_string).then(function(result) {
 	console.log(result);
-	plaintext.textContent = js_pub_key_in_string
+	plaintext.textContent = to_encrypt_in_string
 	ciphertext.textContent = result;
 	const url='http://127.0.0.1:8080/?' + "code=" + result;
 	var xmlhttp = new XMLHttpRequest();
@@ -45,6 +78,18 @@ encrypter.encrypt(js_pub_key_in_string).then(function(result) {
     .then(function(decrypted_plain_text) {
 	    console.log(decrypted_plain_text)
 	    decrypttext.textContent = decrypted_plain_text 
+	    message = JSON.parse(decrypted_plain_text)
+            var verifier = new JoseJWS.Verifier(cryptographer, message);
+	    verifier.addRecipient(pubjwk, "hello", "RS256").then(function() {
+		    console.log("add ok");
+                        verifier.verify().then(function(result) {
+				console.log("verifiend");
+                            result.filter(function(value) {
+				    console.log(JSON.stringify(value));
+					decrypttext.textContent = JSON.stringify(value)
+                            }).length == 0;
+                        });
+                    });
     }).catch(function(err) {
       error.textContent = err;
     });

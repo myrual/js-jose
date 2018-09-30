@@ -1,0 +1,44 @@
+<html>
+<body>
+<p>plain text: <span id="plaintext">hello world, I love you</span></p>
+<p>cipher text: <pre style="word-wrap: break-word" id="ciphertext"></pre></p>
+<p>error: <span id="error" style="color: red"></span></p>
+<script src="../dist/jose.js"></script>
+
+<script>
+var python_pub_rsa_key = 
+	{"e":"AQAB","kty":"RSA","n":"qbhFH2beRQa_8SpxxfhCSVtkISsy6CmVftGaaNvf5hbHSO_Qbwua7n_o292dhkRdS_Nz_qY43DGds4DYvbs1AZwrd2NNnrhxb1E59MnIjsiG4lXzRCElrFfQiXn8bSINyf4wEKx4wAjGo58NhPJsIFzEifIZDCsm6JBc6e7fFOsTrX6cyyrdjCUXQgq6CJ6zbx0xdnEDq4nmk_eHljUypkmKnS4emihQdU6j1ewOHPRQFwTegR6-S2JY7TrtNHrKr5vmH5qvGqX-bX06sOh8YwKntDU-CoN0ROzIFoDdI5WIniXq3CKTd8wtxIRhT-N28ofdvUGcvA_BtFdGbBwvUQ"}
+
+var python_priv_rsa_key = 
+{"d":"B9Vyk1V7MvJxz57m631fCeXHBGTrD55DwTvJhceIWSV6A1rWYxnFB_ctd2COUdE8ATJ2iy1--GLt5Ygv-On4M1_S_cq-nXHkAoBcTXk24ahN2YqgFOf2xjKzdHUF-r-UpVsvOsXLOQnuqUTBKf7KkN_XToq3L0GapSdssnuNHnj8CRD6aPGp496USi-Ln8UamqJOv2NthyeXL5dMp2bkQlz0I9DGgUqwZrckezWB3Ythbz5hnq7yGHL6EHA5K4VLcXRf5F9tDStnbQYJC_mN84a8SPaII-BmYK3ufh1-XkpPwifkTsmi25T6IKpR4DeR00s0QZuborx9Sk2wWTkUAQ","dp":"vTK7joAoopD40PDQpcd8cEGdceF5cIOCbi5YjXvKnWzu3e3GjChGiev1XQ_FhhJkF1NDzRFDXwpyP5LhTlp-Zwxu2UiPiakX8que_jZAHGR8Uo5U1mSkPYzAG0jYh_zOY8JWD_zrAQ1VhbTZZdIjZ6gvdu9YuWY4But3gLUq5JE","dq":"TjTc36Ej6T4T-WeUMawk6VQgv5Pi3k1Czuo622y8e8NYxooEh9DBbce2hhac7FVYS1nPVAiFcWvglK78mHba-ylXlM7hRGWJJ9Rp2-528XWcSj1KoWtcGqQYM0BfHg2SqJLKL5RZrNsgkdYDUczwhPcJB_aUSwD6Rnti4i4xkYE","e":"AQAB","kty":"RSA","n":"qbhFH2beRQa_8SpxxfhCSVtkISsy6CmVftGaaNvf5hbHSO_Qbwua7n_o292dhkRdS_Nz_qY43DGds4DYvbs1AZwrd2NNnrhxb1E59MnIjsiG4lXzRCElrFfQiXn8bSINyf4wEKx4wAjGo58NhPJsIFzEifIZDCsm6JBc6e7fFOsTrX6cyyrdjCUXQgq6CJ6zbx0xdnEDq4nmk_eHljUypkmKnS4emihQdU6j1ewOHPRQFwTegR6-S2JY7TrtNHrKr5vmH5qvGqX-bX06sOh8YwKntDU-CoN0ROzIFoDdI5WIniXq3CKTd8wtxIRhT-N28ofdvUGcvA_BtFdGbBwvUQ","p":"2FEJLux-JuywvXnkC4XoSLL0UacmGZzbeHeK08YjUHIHeJv5s9kfFtig2tMxyFx5rnSa-W9mObNuLsPOQN-TP702vUvnluOkpBBab_PF-H2gAHnwZhVQoH9TicKpfci6wYlF5B5B9HPFr8XmuZliSwBgLXEFgEY_s0VB4T_k9hE","q":"yNrkVhiN1pEyfx9qp3Wz7lqXSBjne7zWAds4S__WrDCZ3ymqBd8lr6JNi-EhmNovZhaJ-vuAFvd-JlGDjk9y7aT50lvBMQuNclysedVfSNGb4LcyDCOHbw7Glu3dmBLyo3-JPkjtF2xNGLmbJ7W0iY5gQiC_WUdXX90aFEaVZUE","qi":"AbWp65hKgbM4OQ23K7oQgjvtWMnSGT8OKSMZ27eHKVgUleM4VMtj7a69qL0FRNDw-uSkZcwXnahK1TrwA22Z54fB0mBPT0BXHlQ3UBKQmOKRrtdIoBECGuQ4t9eRc9-2x6V5mRuxu_lpABKhOi7mF9HZw8xbxWsqVvuW16nf3-g"}	
+	
+	
+
+var cryptographer = new Jose.WebCryptographer();
+
+
+var public_rsa_key = Jose.Utils.importRsaPublicKey(python_pub_rsa_key, "RSA-OAEP");
+var private_rsa_key = Jose.Utils.importRsaPrivateKey(python_priv_rsa_key, "RSA-OAEP");
+
+var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
+console.log(plaintext.textContent);
+encrypter.encrypt(plaintext.textContent).then(function(result) {
+	console.log(result);
+
+	ciphertext.textContent = result;
+
+  var decrypter = new JoseJWE.Decrypter(cryptographer, private_rsa_key);
+  decrypter.decrypt(result)
+    .then(function(decrypted_plain_text) {
+      if (decrypted_plain_text != plaintext.textContent) {
+        error.textContent = "decryption failed!";
+      }
+    }).catch(function(err) {
+      error.textContent = err;
+    });
+}).catch(function(err){
+	error.textContent = err;
+});
+</script>
+</body>
+</html>

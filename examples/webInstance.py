@@ -39,7 +39,10 @@ class fetch:
         print("after decrypt")
         payload_from_client = jwetoken.payload
         print(payload_from_client)
-        client_public_key_in_jwk = json.loads(payload_from_client)
+        client_payload = json.loads(payload_from_client)
+        client_public_key_in_jwk = client_payload["client_key"]
+        client_id_signature = client_payload["signature"]
+        print(client_id_signature)
         client_public_key_in_jwk["use"] = "enc"
         public_key = jwk.JWK(**client_public_key_in_jwk)
         firstHashEngine = hashlib.sha256()

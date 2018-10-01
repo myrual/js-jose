@@ -3,13 +3,16 @@ import web
 import json
 from jwcrypto import jwk, jwe, jws
 from jwcrypto.common import json_encode, json_decode
+import base64
+import base58
+import hashlib
 
 urls = (
     '/', 'fetch',
 )
-predefine_pub = {"e":"AQAB","kty":"RSA","n":"nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ"}
+predefine_pub = {"kid":"server_kid", "e":"AQAB","kty":"RSA","n":"nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ"}
 
-predefine_priv = {"d":"djzmjvd5gxoz0t3FT7RmZ7fFABO7vmUjKKbzj6OOPZqqY2Bwutjs03dbGAoBNzX3OReI_pmplpOQo4OBrPbcVwy2XsEz8DlhM-ZXC_zdY1sinhlvxg2FyJv-9hW-9fB3xUjL5q2jZgxVSOIrgjIuZiVmFJihfn-XS57nzkQssa5OTd7awDT118CX1Ugs3Yg5Q-C9Au0dMig2F9X0TFKEfp_efpckUb5WlX7T42IliX4k91N1sXeTes2MltJ2JvcOm7XQtt54Ap3UXqjI7cTDcZN0qsPCUmUwAoBzXY9YjTOLuVTS3T6RDi3WqNgILbLK_1ZooogM64Nzr3DR4yeXAQ","dp":"ddhsudpiQw1gGKRmgU-JgjrGdIsjyTKdPoACoSdoCvXgjoOmSh1gJbS2chaLPE9_1htooYiVwEC_4QcBdM3QOlRwHekjOR_n0RFez3eJF2jMnwYka_H4qZDF3LNUvIwwSNNONoWnJKd50-vxTQFOfL4dPzESsuVPi4mtGB_OGYE","dq":"PvGRC32t1MpuBpB1ooXkaY7aj8ctZWv1ibqlXWQ-lfR-6imLLpyJKQmb552UhOsARFx8veYsUwnb38i_IuxunG_JE8F0V4vKb4iI45p2X2UrzHQC-1oPhCH01OtLE8N4AlsJZ6sOFg4yMGqWbIQ76iV9s5x_YiKyFhJkC1FzHw0","e":"AQAB","kty":"RSA","n":"nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ","p":"0LmLpVVOc9Bd6ZZcnBGeyvbi1y2DMRjFfZuiMU1CwK5Q-jQkyouFbLlVxJANoqyFmClH-SUs4SWRkIxhcIEbcJ_rGDWyHOLEzD5gc0d48VT5SayH5QjDWUz4xf1FK7e_m_R7G35NedqL3HNv_XjV9phOBcW0Hf-2ZH5PMDNoBcE","q":"wh1q2mM07Qeoy52bTZwfK3Fe-Fjq0UOOZdffz-4Gv5m2L-DXAfXOUKwuCEgi0gNETtdhZonpMtOMIe4uqgTcdhWhMEbVpQCdOQDuw1y4uBzzNtJArpcfJHuDIvjz5_AMNoj3OgJoBdV6lJc95WjGBlp3oouz_ogB78qKAEhz8QU","qi":"e8tF0pisWwcZSH1j4WiGcZoYy6yXAinOfdNfdYhqC6WvCzw0y--n8-xW9CJ5JPPdJ-rXlUnOMOdyRyOtieKLrv4QvOASEMkJut0oztxlqaRxu26QyuWB1QeokJfrKfbH5OgzASOomQesPbFiU_5U7jltVfrgj0atKCcORfwM-t8"}
+predefine_priv = {"kid":"server_kid","d":"djzmjvd5gxoz0t3FT7RmZ7fFABO7vmUjKKbzj6OOPZqqY2Bwutjs03dbGAoBNzX3OReI_pmplpOQo4OBrPbcVwy2XsEz8DlhM-ZXC_zdY1sinhlvxg2FyJv-9hW-9fB3xUjL5q2jZgxVSOIrgjIuZiVmFJihfn-XS57nzkQssa5OTd7awDT118CX1Ugs3Yg5Q-C9Au0dMig2F9X0TFKEfp_efpckUb5WlX7T42IliX4k91N1sXeTes2MltJ2JvcOm7XQtt54Ap3UXqjI7cTDcZN0qsPCUmUwAoBzXY9YjTOLuVTS3T6RDi3WqNgILbLK_1ZooogM64Nzr3DR4yeXAQ","dp":"ddhsudpiQw1gGKRmgU-JgjrGdIsjyTKdPoACoSdoCvXgjoOmSh1gJbS2chaLPE9_1htooYiVwEC_4QcBdM3QOlRwHekjOR_n0RFez3eJF2jMnwYka_H4qZDF3LNUvIwwSNNONoWnJKd50-vxTQFOfL4dPzESsuVPi4mtGB_OGYE","dq":"PvGRC32t1MpuBpB1ooXkaY7aj8ctZWv1ibqlXWQ-lfR-6imLLpyJKQmb552UhOsARFx8veYsUwnb38i_IuxunG_JE8F0V4vKb4iI45p2X2UrzHQC-1oPhCH01OtLE8N4AlsJZ6sOFg4yMGqWbIQ76iV9s5x_YiKyFhJkC1FzHw0","e":"AQAB","kty":"RSA","n":"nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ","p":"0LmLpVVOc9Bd6ZZcnBGeyvbi1y2DMRjFfZuiMU1CwK5Q-jQkyouFbLlVxJANoqyFmClH-SUs4SWRkIxhcIEbcJ_rGDWyHOLEzD5gc0d48VT5SayH5QjDWUz4xf1FK7e_m_R7G35NedqL3HNv_XjV9phOBcW0Hf-2ZH5PMDNoBcE","q":"wh1q2mM07Qeoy52bTZwfK3Fe-Fjq0UOOZdffz-4Gv5m2L-DXAfXOUKwuCEgi0gNETtdhZonpMtOMIe4uqgTcdhWhMEbVpQCdOQDuw1y4uBzzNtJArpcfJHuDIvjz5_AMNoj3OgJoBdV6lJc95WjGBlp3oouz_ogB78qKAEhz8QU","qi":"e8tF0pisWwcZSH1j4WiGcZoYy6yXAinOfdNfdYhqC6WvCzw0y--n8-xW9CJ5JPPdJ-rXlUnOMOdyRyOtieKLrv4QvOASEMkJut0oztxlqaRxu26QyuWB1QeokJfrKfbH5OgzASOomQesPbFiU_5U7jltVfrgj0atKCcORfwM-t8"}
 merge_priv = {**predefine_pub, **predefine_priv}
 merge_priv["use"] = "enc"
 merge_signature_priv = {**predefine_pub, **predefine_priv}
@@ -39,15 +42,23 @@ class fetch:
         result = json.loads(payload)
         result["use"] = "enc"
         public_key = jwk.JWK(**result)
+        m = hashlib.sha256()
+        m.update(result["n"].encode('utf-8'))
+        single_hash256_result = m.digest()
+        n = hashlib.sha256()
+        print("raw hash256 result is:")
+        print(single_hash256_result)
+        encoded_result = base58.b58encode(single_hash256_result).decode("utf-8")
+        print("base58 encode of SHA256 result of client's public key:" + encoded_result)
         toclient_payload = json.dumps([{"type":"ss", "server":"1.1.1.1", "port":1984, "method":"aes-cfb-256", "key":"romanholidy3947"},{"type":"ss", "server":"2.2.1.1", "port":11984, "method":"aes-cfb-256", "key":"juventus_suck"}])
         jwstoken = jws.JWS(toclient_payload.encode('utf-8'))
         print("before sign")
         key_for_signature = jwk.JWK(**merge_signature_priv)
-        if "kid" in result:
-            kid = result["kid"]
+        if "kid" in merge_signature_priv:
+            kid = merge_signature_priv["kid"]
         else:
             kid = "hello"
-        jwstoken.add_signature(key_for_signature, "RS256", json_encode({"alg":"RS256", "kid":"hello"}), None)
+        jwstoken.add_signature(key_for_signature, "RS256", json_encode({"alg":"RS256", "kid":kid}), None)
         print("after sign")
         signed_payload = jwstoken.serialize()
         print("signed:" + signed_payload)

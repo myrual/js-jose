@@ -45,7 +45,7 @@ var pubjwk = {
                 "e": "AQAB",
                 "ext": true,
                 "key_ops": ["verify"],
-                "kid": "hello",
+                "kid": "server_kid",
                 "kty": "RSA",
                 "n": "nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ"
             };
@@ -64,6 +64,100 @@ var keyfinder = function (kid) {
 var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
 to_encrypt_in_string = JSON.stringify(js_pub_key)
 console.log(to_encrypt_in_string);
+function to_b58(B,A)
+{
+    var d = [],   //the array for storing the stream of base58 digits
+        s = "",   //the result string variable that will be returned
+        i,        //the iterator variable for the byte input
+        j,        //the iterator variable for the base58 digit array (d)
+        c,        //the carry amount variable that is used to overflow from the current base58 digit to the next base58 digit
+        n;        //a temporary placeholder variable for the current base58 digit
+    for(i in B) { //loop through each byte in the input stream
+        j = 0,                           //reset the base58 digit iterator
+        c = B[i];                        //set the initial carry amount equal to the current byte amount
+        s += c || s.length ^ i ? "" : 1; //prepend the result string with a "1" (0 in base58) if the byte stream is zero and non-zero bytes haven't been seen yet (to ensure correct decode length)
+        while(j in d || c) {             //start looping through the digits until there are no more digits and no carry amount
+            n = d[j];                    //set the placeholder for the current base58 digit
+            n = n ? n * 256 + c : c;     //shift the current base58 one byte and add the carry amount (or just add the carry amount if this is a new digit)
+            c = n / 58 | 0;              //find the new carry amount (floored integer of current digit divided by 58)
+            d[j] = n % 58;               //reset the current base58 digit to the remainder (the carry amount will pass on the overflow)
+            j++                          //iterate to the next base58 digit
+        }
+    }
+    while(j--)        //since the base58 digits are backwards, loop through them in reverse order
+        s += A[d[j]]; //lookup the character associated with each base58 digit
+    return s          //return the final base58 string
+}
+function base64ArrayBuffer(arrayBuffer) {
+  var base64    = ''
+  var encodings = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+
+  var bytes         = new Uint8Array(arrayBuffer)
+  var byteLength    = bytes.byteLength
+  var byteRemainder = byteLength % 3
+  var mainLength    = byteLength - byteRemainder
+
+  var a, b, c, d
+  var chunk
+
+  // Main loop deals with bytes in chunks of 3
+  for (var i = 0; i < mainLength; i = i + 3) {
+    // Combine the three bytes into a single integer
+    chunk = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2]
+
+    // Use bitmasks to extract 6-bit segments from the triplet
+    a = (chunk & 16515072) >> 18 // 16515072 = (2^6 - 1) << 18
+    b = (chunk & 258048)   >> 12 // 258048   = (2^6 - 1) << 12
+    c = (chunk & 4032)     >>  6 // 4032     = (2^6 - 1) << 6
+    d = chunk & 63               // 63       = 2^6 - 1
+
+    // Convert the raw binary segments to the appropriate ASCII encoding
+    base64 += encodings[a] + encodings[b] + encodings[c] + encodings[d]
+  }
+
+  // Deal with the remaining bytes and padding
+  if (byteRemainder == 1) {
+    chunk = bytes[mainLength]
+
+    a = (chunk & 252) >> 2 // 252 = (2^6 - 1) << 2
+
+    // Set the 4 least significant bits to zero
+    b = (chunk & 3)   << 4 // 3   = 2^2 - 1
+
+    base64 += encodings[a] + encodings[b] + '=='
+  } else if (byteRemainder == 2) {
+    chunk = (bytes[mainLength] << 8) | bytes[mainLength + 1]
+
+    a = (chunk & 64512) >> 10 // 64512 = (2^6 - 1) << 10
+    b = (chunk & 1008)  >>  4 // 1008  = (2^6 - 1) << 4
+
+    // Set the 2 least significant bits to zero
+    c = (chunk & 15)    <<  2 // 15    = 2^4 - 1
+
+    base64 += encodings[a] + encodings[b] + encodings[c] + '='
+  }
+  
+  return base64
+}
+var arrayFromString = function(str) {
+  var arr = str.split('').map(function(c) {
+    return c.charCodeAt(0);
+  });
+  return new Uint8Array(arr);
+};
+
+
+
+Jose.crypto.subtle.digest({name: "SHA-256"}, arrayFromString(js_pub_key["n"])).then(function(hashfromarray) {
+	console.log("hash of public key array converted from string");
+	console.log(js_pub_key["n"])
+	console.log(new Uint8Array(hashfromarray));
+	console.log("b58 encoding");
+	var Base58_character = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+	var encoded_in_b58 = to_b58(new Uint8Array(hashfromarray), Base58_character);
+	console.log(encoded_in_b58);
+  });
+
 encrypter.encrypt(to_encrypt_in_string).then(function(result) {
 	console.log(result);
 	plaintext.textContent = to_encrypt_in_string
@@ -80,7 +174,7 @@ encrypter.encrypt(to_encrypt_in_string).then(function(result) {
 	    decrypttext.textContent = decrypted_plain_text 
 	    message = JSON.parse(decrypted_plain_text)
             var verifier = new JoseJWS.Verifier(cryptographer, message);
-	    verifier.addRecipient(pubjwk, "hello", "RS256").then(function() {
+	    verifier.addRecipient(pubjwk, pubjwk["kid"], "RS256").then(function() {
 		    console.log("add ok");
                         verifier.verify().then(function(result) {
 				console.log("verifiend");

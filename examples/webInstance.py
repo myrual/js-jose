@@ -41,10 +41,16 @@ class fetch:
         print(payload_from_client)
         client_payload = json.loads(payload_from_client)
         client_public_key_in_jwk = client_payload["client_key"]
+        client_public_key_in_jwk["use"] = "sig"
+        public_key_verify = jwk.JWK(**client_public_key_in_jwk)
         client_id_signature = client_payload["signature"]
-        print(client_id_signature)
-        client_public_key_in_jwk["use"] = "enc"
-        public_key = jwk.JWK(**client_public_key_in_jwk)
+        jws_verify_token = jws.JWS()
+        jws_verify_token.deserialize(client_id_signature)
+        jws_verify_token.verify(public_key_verify, "RS256")
+        client_public_key_kid_payload = jws_verify_token.payload.decode("utf-8")
+        print("verify signature of client")
+        print(client_public_key_kid_payload)
+
         firstHashEngine = hashlib.sha256()
         firstHashEngine.update(client_public_key_in_jwk["n"].encode('utf-8'))
         single_hash256_result = firstHashEngine.digest()
@@ -61,6 +67,8 @@ class fetch:
         doublehash_encoded_result = base58.b58encode(double_hash256_result).decode("utf-8")
         print("base58 encode of double SHA256 result of client's public key:" + doublehash_encoded_result)
 
+        client_public_key_in_jwk["use"] = "enc"
+        public_key_enc = jwk.JWK(**client_public_key_in_jwk)
         toclient_payload = json.dumps([{"type":"ss", "server":"1.1.1.1", "port":1984, "method":"aes-cfb-256", "key":"romanholidy3947"},{"type":"ss", "server":"2.2.1.1", "port":11984, "method":"aes-cfb-256", "key":"juventus_suck"}])
         jwstoken = jws.JWS(toclient_payload.encode('utf-8'))
         print("before sign")
@@ -83,7 +91,7 @@ class fetch:
             enc = "A256GCM"
 
         protected_header = {"alg": algorithm ,"enc": enc,"typ": "JWE"}
-        jweresult = jwe.JWE(signed_payload.encode('utf-8'), recipient=public_key, protected=protected_header)
+        jweresult = jwe.JWE(signed_payload.encode('utf-8'), recipient=public_key_enc, protected=protected_header)
         print(jweresult.serialize(True))
         return  jweresult.serialize(True)
 

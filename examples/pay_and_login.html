@@ -60,8 +60,6 @@
         var js_private_rsa_key = Jose.Utils.importRsaPrivateKey(js_sig_priv_key, "RS256");
 
 
-        var pubjwks = {};
-        pubjwks[js_sig_priv_key.kid] = js_sig_priv_key;
         var keyfinder = function (kid) {
             return window.crypto.subtle.importKey("jwk", js_sig_priv_key,
                 { name: "RSASSA-PKCS1-v1_5", hash: { name: "SHA-256" } },

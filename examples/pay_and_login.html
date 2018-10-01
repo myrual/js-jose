@@ -175,14 +175,15 @@
                 console.log("double hash b58 encoding");
                 var Base58_character = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
                 var double_encoded_in_b58 = to_b58(new Uint8Array(double_hashfromarray), Base58_character);
-                console.log(double_encoded_in_b58);
+                content_to_signer = JSON.stringify({"kid":double_encoded_in_b58, "ts":Date.now()})
+                console.log(content_to_signer);
                 var cryptographer_sign = new Jose.WebCryptographer();
                 cryptographer_sign.setContentSignAlgorithm("RS256");
 
                 var signer = new JoseJWS.Signer(cryptographer_sign);
                 signer.addSigner(privjwk_client).then(function () {
                     signer
-                        .sign(double_encoded_in_b58, null, {})
+                        .sign(content_to_signer, null, {})
                         .then(function (message) {
                             signature_in_json = JSON.stringify(message);
                             console.log("signature");

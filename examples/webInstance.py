@@ -6,7 +6,7 @@ from jwcrypto.common import json_encode, json_decode
 import base64
 import base58
 import hashlib
-
+import time
 urls = (
     '/', 'fetch',
 )
@@ -48,9 +48,22 @@ class fetch:
         jws_verify_token = jws.JWS()
         jws_verify_token.deserialize(client_id_signature)
         jws_verify_token.verify(public_key_verify, "RS256")
-        client_public_key_kid_payload = jws_verify_token.payload.decode("utf-8")
+        client_signature_payload = jws_verify_token.payload.decode("utf-8")
         print("verify signature of client")
-        print(client_public_key_kid_payload)
+        print(client_signature_payload)
+        dict_client_signature_payload = json.loads(client_signature_payload)
+        client_public_key_kid_payload = dict_client_signature_payload["kid"]
+        ts_of_sign = dict_client_signature_payload["ts"]/1000
+        print("signature happen on ")
+        print(ts_of_sign)
+        current_server_ts = time.time()
+        print(current_server_ts)
+        ts_diff = current_server_ts - ts_of_sign
+        if ts_diff < 60 and ts_diff >= 0:
+            print("client's ts is very close to me")
+            print(ts_diff)
+        else:
+            return web.notfound
 
         firstHashEngine = hashlib.sha256()
         firstHashEngine.update(client_public_key_in_jwk["n"].encode('utf-8'))

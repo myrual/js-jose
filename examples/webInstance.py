@@ -66,6 +66,10 @@ class fetch:
         print(double_hash256_result)
         doublehash_encoded_result = base58.b58encode(double_hash256_result).decode("utf-8")
         print("base58 encode of double SHA256 result of client's public key:" + doublehash_encoded_result)
+        if client_public_key_kid_payload == doublehash_encoded_result:
+            print("the signature is verified by client's public key, the payload is same as my calculated result")
+        else:
+            return web.notfound
 
         client_public_key_in_jwk["use"] = "enc"
         public_key_enc = jwk.JWK(**client_public_key_in_jwk)

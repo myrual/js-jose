@@ -40,10 +40,11 @@ class fetch:
         payload_from_client = jwetoken.payload
         print(payload_from_client)
         client_payload = json.loads(payload_from_client)
-        client_public_key_in_jwk = client_payload["client_key"]
+        client_public_key_in_jwk = client_payload["key"]
         client_public_key_in_jwk["use"] = "sig"
         public_key_verify = jwk.JWK(**client_public_key_in_jwk)
         client_id_signature = client_payload["signature"]
+        client_request = client_payload["request"]
         jws_verify_token = jws.JWS()
         jws_verify_token.deserialize(client_id_signature)
         jws_verify_token.verify(public_key_verify, "RS256")
@@ -70,7 +71,10 @@ class fetch:
             print("the signature is verified by client's public key, the payload is same as my calculated result")
         else:
             return web.notfound
-
+        if client_request == "ss_cert":
+            print("got your command")
+        else:
+            return web.notfound
         client_public_key_in_jwk["use"] = "enc"
         public_key_enc = jwk.JWK(**client_public_key_in_jwk)
         toclient_payload = json.dumps([{"type":"ss", "server":"1.1.1.1", "port":1984, "method":"aes-cfb-256", "key":"romanholidy3947"},{"type":"ss", "server":"2.2.1.1", "port":11984, "method":"aes-cfb-256", "key":"juventus_suck"}])

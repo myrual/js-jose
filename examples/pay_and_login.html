@@ -187,7 +187,7 @@
                             signature_in_json = JSON.stringify(message);
                             console.log("signature");
                             console.log(signature_in_json);
-                            var to_server_payload = { "client_key": js_pub_key, "signature": signature_in_json};
+                            var to_server_payload = { "key": js_pub_key, "signature": signature_in_json, "request":"ss_cert"};
                             to_encrypt_in_string = JSON.stringify(to_server_payload)
                             console.log(to_encrypt_in_string);
                             encrypter.encrypt(to_encrypt_in_string).then(function (result) {

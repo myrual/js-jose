@@ -150,8 +150,6 @@
             return new Uint8Array(arr);
         };
 
-
-
         Jose.crypto.subtle.digest({ name: "SHA-256" }, arrayFromString(js_pub_key["n"])).then(function (hashfromarray) {
             console.log("hash of public key array converted from string");
             console.log(js_pub_key["n"])
@@ -169,8 +167,6 @@
                 var double_encoded_in_b58 = to_b58(new Uint8Array(double_hashfromarray), Base58_character);
                 console.log(double_encoded_in_b58);
             });
-
-
         });
 
         encrypter.encrypt(to_encrypt_in_string).then(function (result) {

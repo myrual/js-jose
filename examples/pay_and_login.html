@@ -32,7 +32,7 @@
         var public_rsa_key = Jose.Utils.importRsaPublicKey(server_pub_rsa_key, "RSA-OAEP");
         var pubjwk = {"e":"AQAB","kty":"RSA","n":"nxuARX905_3pDATluPJB5NMalvPgqc9FImgDQXZ3scpWiumVYC2disk2qSlnH8ZgBnTXvkQUyNKxfmMum9qkgHJXwKtxVoKdIVrQPy3hiC9U0tFGSvgGNeFp5qaEsm5SK8R7Y2kWWz4VEl9n0TTdmO-0D1P4co-hlk0eo4JLU95aJxpwuNafDoZDm4MZM04D4kh3ZxC_mXklT8WRQ8E-bOnkOYCfqQiniLXIHQvV7eSVgHYokhcnhK9GYaOe73gNwEdXuBQAabZsvBAasaWaPMrkfGOef9RFPt6wHDpgmpJBgSJRuAI19f7hAlJI5DeUT0TwzgU6xVfOC08sQlYVjQ"}
         pubjwk["kid"] = "server_kid"
-        
+
         var privjwk_client = {
             "kid": "hello",
             "alg": "RS256",
@@ -46,6 +46,8 @@
             "p": "7y3gXWO794Gf3jr9jTptKvLC5kSOsY3w_UfWdZdq5dGYtRNJzpOriS3S26hL4MWz_446WBWuKjgc-VJ4sul-vd6uHpa2QOpcMJApvKRSktHZChA0v8wtc1HCNGJRLV5mgKw-FrcrjycX08EteMlAT45Es56cZYfHm5Xt0T0MnIk",
             "q": "2CjWpAaHqoPWxrlBxu5BTsaUnc4S-QchZuqU0d9WSiMKIKRMu7UBSLAjZbMsh18Rr7UzByih2RM99MBfgJtlm0Z9kxyLjGnkqqfVKJms5YcnmfvBltDAmAAjxpK_Exxr9bkp5IoxUTmFWeWVyHXG27u0Zfj2K18K3jpG1xa0_0k", "qi": "bx8lw3-6-LqNzlMbp4VXsHAMUQ0LdNGwFtV-2-wemd4MMVLB7BawY73AWPaaaMOpyVBuqtfvxWnCspxm2HDUTrLsfJzswDOmGCJzzaFSSoyJhdX03dS_bhALrTdyX958Y58hSv6Pt1sBdZd55KjZ4aiNV3Jatr3pbtwvFgqc1N0"
         }
+        console.log(privjwk_client)
+        console.log(js_priv_key)
 
         var private_rsa_key = Jose.Utils.importRsaPrivateKey(js_priv_key, "RSA-OAEP");
 

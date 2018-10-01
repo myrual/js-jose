@@ -31,25 +31,33 @@ class fetch:
         print("-------private key-------")
         print(type(mixindata.code))
         print(len(mixindata.code))
-        private_key = jwk.JWK(**merge_priv)
+        private_key_server = jwk.JWK(**merge_priv)
         jwetoken = jwe.JWE()
         print("before decrypt")
-        jwetoken.deserialize(mixindata.code, key=private_key)
+        jwetoken.deserialize(mixindata.code, key=private_key_server)
 
         print("after decrypt")
-        payload = jwetoken.payload
-        print(payload)
-        result = json.loads(payload)
-        result["use"] = "enc"
-        public_key = jwk.JWK(**result)
+        payload_from_client = jwetoken.payload
+        print(payload_from_client)
+        client_public_key_in_jwk = json.loads(payload_from_client)
+        client_public_key_in_jwk["use"] = "enc"
+        public_key = jwk.JWK(**client_public_key_in_jwk)
         m = hashlib.sha256()
-        m.update(result["n"].encode('utf-8'))
+        m.update(client_public_key_in_jwk["n"].encode('utf-8'))
         single_hash256_result = m.digest()
         n = hashlib.sha256()
+        n.update(single_hash256_result)
+        double_hash256_result = n.digest()
         print("raw hash256 result is:")
         print(single_hash256_result)
         encoded_result = base58.b58encode(single_hash256_result).decode("utf-8")
         print("base58 encode of SHA256 result of client's public key:" + encoded_result)
+
+        print("raw double sha256:")
+        print(double_hash256_result)
+        doublehash_encoded_result = base58.b58encode(double_hash256_result).decode("utf-8")
+        print("base58 encode of double SHA256 result of client's public key:" + doublehash_encoded_result)
+
         toclient_payload = json.dumps([{"type":"ss", "server":"1.1.1.1", "port":1984, "method":"aes-cfb-256", "key":"romanholidy3947"},{"type":"ss", "server":"2.2.1.1", "port":11984, "method":"aes-cfb-256", "key":"juventus_suck"}])
         jwstoken = jws.JWS(toclient_payload.encode('utf-8'))
         print("before sign")
@@ -62,12 +70,12 @@ class fetch:
         print("after sign")
         signed_payload = jwstoken.serialize()
         print("signed:" + signed_payload)
-        if "alg" in result:
-            algorithm = result["alg"]
+        if "alg" in client_public_key_in_jwk:
+            algorithm = client_public_key_in_jwk["alg"]
         else:
             algorithm = "RSA-OAEP"
-        if "enc" in result:
-            enc = result["enc"]
+        if "enc" in client_public_key_in_jwk:
+            enc = client_public_key_in_jwk["enc"]
         else:
             enc = "A256GCM"
 

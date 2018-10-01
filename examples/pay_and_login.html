@@ -27,10 +27,6 @@
         var js_pub_key = { "kid": "hello", "use": "enc", "alg": "RSA-OAEP", "enc": "A256CBC-HS512", "e": "AQAB", "kty": "RSA", "n": "yfTdA3PJzyo2LT899lspEA8QESzDDMO-rRu7VtIKCSgBliCCI4etuVHU--2h3JXFHaNttfFTm2uA1ps1G86q90tvTol7MBqSZgD51dlBP_V5vDtdkmi_sS38Szfz_Qu6CS2-JxDmLdrBPJAXJjOW13Sz6e-cjT3TCsmV3n4zqyYbLSHOBdLpLAcH6JWtqsJE8bED68C5EZzfBtWoOXWtsNJgsGIQ2hugdh-VAm4lCPaSIOdQKGczfvSRFcsTMCKox9norysq3rfKqh0b_UBfcBDhFtFnVrCFGVtsbKV9OIf404J_QOpH8pjeyAVcocBN4TzJilrOfiDlcSvaztkaEQ" }
         var js_priv_key = { "kid": "hello", "d": "iQ5AH2OpBYqkEbjlmBbtmxRd1woFpNgCwwAa9yS74tLfoL6XEv21DBtY60-tlUGe8CpE_kC0eLlQSlQyipiKtiDffPEYROEDkW4AHvy9p2Y0I2Y2bnHgBaIrofBrCMO4kRoV_fUeAOiAU1WGIErKh5WPs6cFG2Vln-CGcOQ8tFyG-PCpwrhNlQJP5XnkbL56H9e9R-AnuKVSDm3TFM_gtKGfMpEM1g3Y7rK9LoV-l24FyEBFGth5wcr2Mb4ZxOEYslKAxhztelaU0WFnzguByMkgZAmfJDGy64XsZzdEbYqM5aPhCMEyFIQ3BVcTtr_llbo94gm6osB5klewTpD3AQ", "dp": "O6BCOMXuTCuigTJPl2-jW3udnu4kbJsoItxP2Izg914jJbEjSz6BGvezg1MXZ3eiAemhHeh5vMi0YGtw75lKIWdsHPARi2lhhjHKVd7ZPwTViK61l8L86azOL2T7O8Y244kNCXisgUmLpRyZi20QfUTIV8cI0j7hQiZEXU9M35E", "dq": "af5cgcHR9IMBZiChaHKcA4zMgzTxiLs-XcDZiLADGAdmh-sI1WJEZug38z6QrzCm84neo7wA4PjWgJV0PxP0FtfR67krlIa4YhY6J9ZzOXm0qYURwGpMhjxLTqvWlgBxz-Qj7rT0yedyxEoX0FwwTr8UDoyt6UaJhb79zaqMxkE", "e": "AQAB", "kty": "RSA", "n": "yfTdA3PJzyo2LT899lspEA8QESzDDMO-rRu7VtIKCSgBliCCI4etuVHU--2h3JXFHaNttfFTm2uA1ps1G86q90tvTol7MBqSZgD51dlBP_V5vDtdkmi_sS38Szfz_Qu6CS2-JxDmLdrBPJAXJjOW13Sz6e-cjT3TCsmV3n4zqyYbLSHOBdLpLAcH6JWtqsJE8bED68C5EZzfBtWoOXWtsNJgsGIQ2hugdh-VAm4lCPaSIOdQKGczfvSRFcsTMCKox9norysq3rfKqh0b_UBfcBDhFtFnVrCFGVtsbKV9OIf404J_QOpH8pjeyAVcocBN4TzJilrOfiDlcSvaztkaEQ", "p": "7y3gXWO794Gf3jr9jTptKvLC5kSOsY3w_UfWdZdq5dGYtRNJzpOriS3S26hL4MWz_446WBWuKjgc-VJ4sul-vd6uHpa2QOpcMJApvKRSktHZChA0v8wtc1HCNGJRLV5mgKw-FrcrjycX08EteMlAT45Es56cZYfHm5Xt0T0MnIk", "q": "2CjWpAaHqoPWxrlBxu5BTsaUnc4S-QchZuqU0d9WSiMKIKRMu7UBSLAjZbMsh18Rr7UzByih2RM99MBfgJtlm0Z9kxyLjGnkqqfVKJms5YcnmfvBltDAmAAjxpK_Exxr9bkp5IoxUTmFWeWVyHXG27u0Zfj2K18K3jpG1xa0_0k", "qi": "bx8lw3-6-LqNzlMbp4VXsHAMUQ0LdNGwFtV-2-wemd4MMVLB7BawY73AWPaaaMOpyVBuqtfvxWnCspxm2HDUTrLsfJzswDOmGCJzzaFSSoyJhdX03dS_bhALrTdyX958Y58hSv6Pt1sBdZd55KjZ4aiNV3Jatr3pbtwvFgqc1N0" }
         var cryptographer = new Jose.WebCryptographer();
-        var js_sig_priv_key = { "kid": "hello", "d": "iQ5AH2OpBYqkEbjlmBbtmxRd1woFpNgCwwAa9yS74tLfoL6XEv21DBtY60-tlUGe8CpE_kC0eLlQSlQyipiKtiDffPEYROEDkW4AHvy9p2Y0I2Y2bnHgBaIrofBrCMO4kRoV_fUeAOiAU1WGIErKh5WPs6cFG2Vln-CGcOQ8tFyG-PCpwrhNlQJP5XnkbL56H9e9R-AnuKVSDm3TFM_gtKGfMpEM1g3Y7rK9LoV-l24FyEBFGth5wcr2Mb4ZxOEYslKAxhztelaU0WFnzguByMkgZAmfJDGy64XsZzdEbYqM5aPhCMEyFIQ3BVcTtr_llbo94gm6osB5klewTpD3AQ", "dp": "O6BCOMXuTCuigTJPl2-jW3udnu4kbJsoItxP2Izg914jJbEjSz6BGvezg1MXZ3eiAemhHeh5vMi0YGtw75lKIWdsHPARi2lhhjHKVd7ZPwTViK61l8L86azOL2T7O8Y244kNCXisgUmLpRyZi20QfUTIV8cI0j7hQiZEXU9M35E", "dq": "af5cgcHR9IMBZiChaHKcA4zMgzTxiLs-XcDZiLADGAdmh-sI1WJEZug38z6QrzCm84neo7wA4PjWgJV0PxP0FtfR67krlIa4YhY6J9ZzOXm0qYURwGpMhjxLTqvWlgBxz-Qj7rT0yedyxEoX0FwwTr8UDoyt6UaJhb79zaqMxkE", "e": "AQAB", "kty": "RSA", "n": "yfTdA3PJzyo2LT899lspEA8QESzDDMO-rRu7VtIKCSgBliCCI4etuVHU--2h3JXFHaNttfFTm2uA1ps1G86q90tvTol7MBqSZgD51dlBP_V5vDtdkmi_sS38Szfz_Qu6CS2-JxDmLdrBPJAXJjOW13Sz6e-cjT3TCsmV3n4zqyYbLSHOBdLpLAcH6JWtqsJE8bED68C5EZzfBtWoOXWtsNJgsGIQ2hugdh-VAm4lCPaSIOdQKGczfvSRFcsTMCKox9norysq3rfKqh0b_UBfcBDhFtFnVrCFGVtsbKV9OIf404J_QOpH8pjeyAVcocBN4TzJilrOfiDlcSvaztkaEQ", "p": "7y3gXWO794Gf3jr9jTptKvLC5kSOsY3w_UfWdZdq5dGYtRNJzpOriS3S26hL4MWz_446WBWuKjgc-VJ4sul-vd6uHpa2QOpcMJApvKRSktHZChA0v8wtc1HCNGJRLV5mgKw-FrcrjycX08EteMlAT45Es56cZYfHm5Xt0T0MnIk", "q": "2CjWpAaHqoPWxrlBxu5BTsaUnc4S-QchZuqU0d9WSiMKIKRMu7UBSLAjZbMsh18Rr7UzByih2RM99MBfgJtlm0Z9kxyLjGnkqqfVKJms5YcnmfvBltDAmAAjxpK_Exxr9bkp5IoxUTmFWeWVyHXG27u0Zfj2K18K3jpG1xa0_0k", "qi": "bx8lw3-6-LqNzlMbp4VXsHAMUQ0LdNGwFtV-2-wemd4MMVLB7BawY73AWPaaaMOpyVBuqtfvxWnCspxm2HDUTrLsfJzswDOmGCJzzaFSSoyJhdX03dS_bhALrTdyX958Y58hSv6Pt1sBdZd55KjZ4aiNV3Jatr3pbtwvFgqc1N0" }
-        js_sig_priv_key["alg"] = "RS256";
-        js_sig_priv_key["kid"] = "hello";
-
 
 
         var public_rsa_key = Jose.Utils.importRsaPublicKey(server_pub_rsa_key, "RSA-OAEP");
@@ -61,14 +57,7 @@
         }
 
         var private_rsa_key = Jose.Utils.importRsaPrivateKey(js_priv_key, "RSA-OAEP");
-        var js_private_rsa_key = Jose.Utils.importRsaPrivateKey(js_sig_priv_key, "RS256");
 
-
-        var keyfinder = function (kid) {
-            return window.crypto.subtle.importKey("jwk", js_sig_priv_key,
-                { name: "RSASSA-PKCS1-v1_5", hash: { name: "SHA-256" } },
-                true, ['verify']);
-        };
         var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
         function to_b58(B, A) {
             var d = [],   //the array for storing the stream of base58 digits

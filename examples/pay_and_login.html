@@ -143,9 +143,10 @@
             console.log(server_ts);
 
             message = JSON.parse(signature_ts)
-            var verifier = new JoseJWS.Verifier(cryptographer, message);
-            verifier.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
-                verifier.verify().then(function (result) {
+            var cryptographer_verify = new Jose.WebCryptographer();
+            var verifier_server = new JoseJWS.Verifier(cryptographer_verify, message);
+            verifier_server.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
+                verifier_server.verify().then(function (result) {
                     result.filter(function (value) {
                         server_ts = parseInt(value.payload);
                         client_ts = Date.now() / 1000;
@@ -169,10 +170,10 @@
                                     var Base58_character = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
                                     var double_encoded_in_b58 = to_b58(new Uint8Array(double_hashfromarray), Base58_character);
                                     content_to_signer = JSON.stringify({ "kid": double_encoded_in_b58, "ts": Date.now() })
-                                    var cryptographer_sign = new Jose.WebCryptographer();
-                                    cryptographer_sign.setContentSignAlgorithm("RS256");
+                                    var cryptographer_sign_client = new Jose.WebCryptographer();
+                                    cryptographer_sign_client.setContentSignAlgorithm("RS256");
 
-                                    var signer = new JoseJWS.Signer(cryptographer_sign);
+                                    var signer = new JoseJWS.Signer(cryptographer_sign_client);
                                     signer.addSigner(js_priv_key_sign).then(function () {
                                         signer
                                             .sign(content_to_signer, null, {})
@@ -197,6 +198,8 @@
                                                                 message = JSON.parse(decrypted_plain_text)
                                                                 var verifier = new JoseJWS.Verifier(cryptographer, message);
                                                                 verifier.addRecipient(server_pub_rsa_key_verify, server_pub_rsa_key_verify["kid"], "RS256").then(function () {
+                                                                console.log(server_public_key_from_server)
+                                                                console.log(server_pub_rsa_key_verify)
                                                                     verifier.verify().then(function (result) {
                                                                         result.filter(function (value) {
                                                                             verified_payload = JSON.parse(value.payload);

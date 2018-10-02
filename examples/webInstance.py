@@ -9,7 +9,7 @@ import hashlib
 import time
 urls = (
     '/cert.info', 'fetch',
-    '/price', 'contract'
+    '/price.json', 'contract'
 )
 predefine_pub = {"kid": "server_kid", "e": "AQAB", "kty": "RSA", "n": "nxuARX905_3pDATluPJB5NMalvPgqc9FImgDQXZ3scpWiumVYC2disk2qSlnH8ZgBnTXvkQUyNKxfmMum9qkgHJXwKtxVoKdIVrQPy3hiC9U0tFGSvgGNeFp5qaEsm5SK8R7Y2kWWz4VEl9n0TTdmO-0D1P4co-hlk0eo4JLU95aJxpwuNafDoZDm4MZM04D4kh3ZxC_mXklT8WRQ8E-bOnkOYCfqQiniLXIHQvV7eSVgHYokhcnhK9GYaOe73gNwEdXuBQAabZsvBAasaWaPMrkfGOef9RFPt6wHDpgmpJBgSJRuAI19f7hAlJI5DeUT0TwzgU6xVfOC08sQlYVjQ"}
 

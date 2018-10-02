@@ -21,8 +21,6 @@
     <script src="../dist/jose.js"></script>
 
     <script>
-        var server_pub_rsa_key_encrypt = { "e": "AQAB", "kty": "RSA", "n": "nxuARX905_3pDATluPJB5NMalvPgqc9FImgDQXZ3scpWiumVYC2disk2qSlnH8ZgBnTXvkQUyNKxfmMum9qkgHJXwKtxVoKdIVrQPy3hiC9U0tFGSvgGNeFp5qaEsm5SK8R7Y2kWWz4VEl9n0TTdmO-0D1P4co-hlk0eo4JLU95aJxpwuNafDoZDm4MZM04D4kh3ZxC_mXklT8WRQ8E-bOnkOYCfqQiniLXIHQvV7eSVgHYokhcnhK9GYaOe73gNwEdXuBQAabZsvBAasaWaPMrkfGOef9RFPt6wHDpgmpJBgSJRuAI19f7hAlJI5DeUT0TwzgU6xVfOC08sQlYVjQ" }
-        //            { "use": "enc", "e": "AQAB", "kty": "RSA", "n": "nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ" }
         var server_pub_rsa_key_verify = { "e": "AQAB", "kty": "RSA", "n": "nxuARX905_3pDATluPJB5NMalvPgqc9FImgDQXZ3scpWiumVYC2disk2qSlnH8ZgBnTXvkQUyNKxfmMum9qkgHJXwKtxVoKdIVrQPy3hiC9U0tFGSvgGNeFp5qaEsm5SK8R7Y2kWWz4VEl9n0TTdmO-0D1P4co-hlk0eo4JLU95aJxpwuNafDoZDm4MZM04D4kh3ZxC_mXklT8WRQ8E-bOnkOYCfqQiniLXIHQvV7eSVgHYokhcnhK9GYaOe73gNwEdXuBQAabZsvBAasaWaPMrkfGOef9RFPt6wHDpgmpJBgSJRuAI19f7hAlJI5DeUT0TwzgU6xVfOC08sQlYVjQ" }
         server_pub_rsa_key_verify["kid"] = "server_kid"
 
@@ -184,7 +182,6 @@
                                                 to_encrypt_in_string = JSON.stringify(to_server_payload)
                                                 console.log("prepare to encrypt")
                                                 console.log(server_public_key_from_server)
-                                                console.log(server_pub_rsa_key_encrypt)
                                                 var public_rsa_key = Jose.Utils.importRsaPublicKey(server_public_key_from_server, "RSA-OAEP");
                                                 var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
                                                 encrypter.encrypt(to_encrypt_in_string).then(function (result) {

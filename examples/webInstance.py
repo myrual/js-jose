@@ -95,7 +95,7 @@ class fetch:
         client_id_signature = client_payload["signature"]
         client_request = client_payload["request"]
         jws_verify_token = jws.JWS()
-        jws_verify_token.deserialize(client_id_signature)
+        jws_verify_token.deserialize(json.dumps(client_id_signature))
         jws_verify_token.verify(public_key_verify, "RS256")
         client_signature_payload = jws_verify_token.payload.decode("utf-8")
         print("verify signature of client")

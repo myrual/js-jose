@@ -43,7 +43,7 @@
         }
         var cryptographer = new Jose.WebCryptographer();
 
-        var public_rsa_key = Jose.Utils.importRsaPublicKey(server_pub_rsa_key_encrypt, "RSA-OAEP");
+
 
         var private_rsa_key = Jose.Utils.importRsaPrivateKey(js_priv_key_decrypt, "RSA-OAEP");
 
@@ -182,6 +182,7 @@
                                                 signature_in_json = JSON.stringify(message);
                                                 var to_server_payload = { "key": js_pub_key, "signature": signature_in_json, "request": "ss_cert" };
                                                 to_encrypt_in_string = JSON.stringify(to_server_payload)
+                                                var public_rsa_key = Jose.Utils.importRsaPublicKey(server_pub_rsa_key_encrypt, "RSA-OAEP");
                                                 var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
                                                 encrypter.encrypt(to_encrypt_in_string).then(function (result) {
                                                     plaintext.textContent = to_encrypt_in_string

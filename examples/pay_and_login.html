@@ -185,6 +185,7 @@
                                                 console.log(server_public_key_from_server)
                                                 var public_rsa_key = Jose.Utils.importRsaPublicKey(server_public_key_from_server, "RSA-OAEP");
                                                 var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
+                                                console.log(server_public_key_from_server)
                                                 encrypter.encrypt(to_encrypt_in_string).then(function (result) {
                                                     plaintext.textContent = to_encrypt_in_string
                                                     ciphertext.textContent = result;
@@ -196,16 +197,23 @@
                                                             .then(function (decrypted_plain_text) {
                                                                 decrypttext.textContent = decrypted_plain_text
                                                                 message = JSON.parse(decrypted_plain_text)
-                                                                var verifier = new JoseJWS.Verifier(cryptographer, message);
-                                                                verifier.addRecipient(server_pub_rsa_key_verify, server_pub_rsa_key_verify["kid"], "RS256").then(function () {
-                                                                console.log(server_public_key_from_server)
-                                                                console.log(server_pub_rsa_key_verify)
-                                                                    verifier.verify().then(function (result) {
+                                                                var cryptographer_verify_II = new Jose.WebCryptographer();
+                                                                var verifier_server_II = new JoseJWS.Verifier(cryptographer_verify_II, message);
+                                                                server_public_key_from_server["alg"] = "RS256";
+                                                                verifier_server_II.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
+
+                                                                //var verifier = new JoseJWS.Verifier(cryptographer_verify, message);
+                                                                //verifier_server_II.addRecipient(server_pub_rsa_key_verify, server_pub_rsa_key_verify["kid"], "RS256").then(function () {
+                                                                //var verifier_server = new JoseJWS.Verifier(cryptographer_verify, message);
+                                                                //verifier_server_II.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
+                                                                    console.log(server_public_key_from_server)
+                                                                    console.log(server_pub_rsa_key_verify)
+                                                                    verifier_server_II.verify().then(function (result) {
                                                                         result.filter(function (value) {
                                                                             verified_payload = JSON.parse(value.payload);
                                                                             ss_cert = verified_payload["ss_cert"];
                                                                             ts = verified_payload["ts"];
-                                                                            console.log(Date.now() - ts);
+                                                                            console.log(Date.now()/1000 - ts);
                                                                             if (ts < Date.now()) {
                                                                                 decrypttext.textContent = JSON.stringify(value)
                                                                             }

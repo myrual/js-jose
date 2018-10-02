@@ -28,6 +28,7 @@ class contract:
         web.header('Content-Type', 'application/json')
         current_server_ts_string = str(int(time.time()))
         toclient_payload = {"ContractAddress":"0xdeadbeef", "Price":"1", "PublicKey":predefine_pub, "ts":current_server_ts_string}
+        print(toclient_payload)
         jwstoken = jws.JWS(current_server_ts_string.encode('utf-8'))
         print("before sign")
         key_for_signature = jwk.JWK(**merge_signature_priv)
@@ -40,7 +41,10 @@ class contract:
         signed_payload = jwstoken.serialize()
         print("get price signed:" + signed_payload)
         response_to_client = {"content":toclient_payload, "ts_signature":signed_payload}
+        print("--------")
         print(response_to_client)
+        print(json.dumps(response_to_client))
+        print("--------")
         return  json.dumps(response_to_client)
 
 class fetch:

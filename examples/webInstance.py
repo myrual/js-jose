@@ -119,8 +119,8 @@ class fetch:
         client_public_key_in_jwk["use"] = "enc"
         public_key_enc = jwk.JWK(**client_public_key_in_jwk)
         ss_cert_list = [{"type":"ss", "server":"1.1.1.1", "port":1984, "method":"aes-cfb-256", "key":"romanholidy3947"},{"type":"ss", "server":"2.2.1.1", "port":11984, "method":"aes-cfb-256", "key":"juventus_suck"}]
-        toclient_payload = json.dumps({"ss_cert":ss_cert_list, "ts":int(time.time())})
-        jwstoken = jws.JWS(toclient_payload.encode('utf-8'))
+        ts_server = int(time.time())
+        jwstoken = jws.JWS(str(ts_server).encode('utf-8'))
         print("before sign")
         key_for_signature = jwk.JWK(**merge_signature_priv)
         if "kid" in merge_signature_priv:
@@ -130,6 +130,7 @@ class fetch:
         jwstoken.add_signature(key_for_signature, "RS256", json_encode({"alg":"RS256", "kid":kid}), None)
         print("after sign")
         signed_payload = jwstoken.serialize()
+        response_with_signed_ts = json.dumps({"ss_cert":ss_cert_list, "ts":ts_server, "signature_str_ts":signed_payload})
         print("signed:" + signed_payload)
         if "alg" in client_public_key_in_jwk:
             algorithm = client_public_key_in_jwk["alg"]
@@ -141,7 +142,7 @@ class fetch:
             enc = "A256GCM"
 
         protected_header = {"alg": algorithm ,"enc": enc,"typ": "JWE"}
-        jweresult = jwe.JWE(signed_payload.encode('utf-8'), recipient=public_key_enc, protected=protected_header)
+        jweresult = jwe.JWE(response_with_signed_ts.encode('utf-8'), recipient=public_key_enc, protected=protected_header)
         print(jweresult.serialize(True))
         return  jweresult.serialize(True)
 

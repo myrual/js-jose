@@ -194,19 +194,22 @@
                                                             .then(function (decrypted_plain_text) {
                                                                 decrypttext.textContent = decrypted_plain_text
                                                                 message = JSON.parse(decrypted_plain_text)
+                                                                console.log(message)
+                                                                ss_cert_content = message["ss_cert"];
                                                                 var cryptographer_verify_II = new Jose.WebCryptographer();
-                                                                var verifier_server_II = new JoseJWS.Verifier(cryptographer_verify_II, message);
+                                                                var verifier_server_II = new JoseJWS.Verifier(cryptographer_verify_II, message["signature_str_ts"]);
                                                                 server_public_key_from_server["alg"] = "RS256";
                                                                 verifier_server_II.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
                                                                     verifier_server_II.verify().then(function (result) {
                                                                         result.filter(function (value) {
+                                                                            console.log("verify success");
                                                                             verified_payload = JSON.parse(value.payload);
-                                                                            ss_cert = verified_payload["ss_cert"];
-                                                                            ts = verified_payload["ts"];
-                                                                            console.log(Date.now()/1000 - ts);
-                                                                            if (ts < Date.now()) {
-                                                                                decrypttext.textContent = JSON.stringify(value.payload);
-                                                                                console.log(decrypttext.textContent);
+                                                                            var ts_signed_by_server = parseInt(verified_payload);
+                                                                            console.log(verified_payload);
+                                                                            console.log(Date.now()/1000 - ts_signed_by_server);
+                                                                            if (ts_signed_by_server < Date.now()) {
+                                                                                console.log("ts is correct");
+                                                                                console.log(ss_cert_content);
                                                                             }
 
                                                                         }).length == 0;

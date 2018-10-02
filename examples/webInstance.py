@@ -138,10 +138,9 @@ class fetch:
         jwstoken.add_signature(key_for_signature, "RS256", json_encode(
             {"alg": "RS256", "kid": kid}), None)
         print("after sign")
-        signed_payload = jwstoken.serialize()
+        signed_payload = json.loads(jwstoken.serialize())
         response_with_signed_ts = json.dumps(
             {"ss_cert": ss_cert_list, "ts": ts_server, "signature_str_ts": signed_payload})
-        print("signed:" + signed_payload)
         if "alg" in client_public_key_in_jwk:
             algorithm = client_public_key_in_jwk["alg"]
         else:

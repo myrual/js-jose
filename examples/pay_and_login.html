@@ -139,9 +139,8 @@
             console.log(server_price);
             console.log(server_ts);
 
-            message = JSON.parse(signature_ts)
             var cryptographer_verify = new Jose.WebCryptographer();
-            var verifier_server = new JoseJWS.Verifier(cryptographer_verify, message);
+            var verifier_server = new JoseJWS.Verifier(cryptographer_verify, signature_ts);
             verifier_server.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
                 verifier_server.verify().then(function (result) {
                     result.filter(function (value) {

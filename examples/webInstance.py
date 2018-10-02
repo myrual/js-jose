@@ -57,8 +57,7 @@ class contract:
         jwstoken.add_signature(key_for_signature, "RS256", json_encode(
             {"alg": "RS256", "kid": kid}), None)
         print("after sign")
-        signed_payload = jwstoken.serialize()
-        print("get price signed:" + signed_payload)
+        signed_payload = json.loads(jwstoken.serialize())
         response_to_client = {"content": toclient_payload,
                               "ts_signature": signed_payload}
         print("--------")

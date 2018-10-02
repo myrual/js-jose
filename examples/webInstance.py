@@ -11,7 +11,7 @@ urls = (
     '/cert.info', 'fetch',
     '/price', 'contract'
 )
-predefine_pub = {"kid":"server_kid", "e":"AQAB","kty":"RSA","n":"nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ"}
+predefine_pub = {"kid":"server_kid", "e":"AQAB","kty":"RSA","n":"nxuARX905_3pDATluPJB5NMalvPgqc9FImgDQXZ3scpWiumVYC2disk2qSlnH8ZgBnTXvkQUyNKxfmMum9qkgHJXwKtxVoKdIVrQPy3hiC9U0tFGSvgGNeFp5qaEsm5SK8R7Y2kWWz4VEl9n0TTdmO-0D1P4co-hlk0eo4JLU95aJxpwuNafDoZDm4MZM04D4kh3ZxC_mXklT8WRQ8E-bOnkOYCfqQiniLXIHQvV7eSVgHYokhcnhK9GYaOe73gNwEdXuBQAabZsvBAasaWaPMrkfGOef9RFPt6wHDpgmpJBgSJRuAI19f7hAlJI5DeUT0TwzgU6xVfOC08sQlYVjQ"}
 
 #predefine_priv = {"kid":"server_kid","d":"djzmjvd5gxoz0t3FT7RmZ7fFABO7vmUjKKbzj6OOPZqqY2Bwutjs03dbGAoBNzX3OReI_pmplpOQo4OBrPbcVwy2XsEz8DlhM-ZXC_zdY1sinhlvxg2FyJv-9hW-9fB3xUjL5q2jZgxVSOIrgjIuZiVmFJihfn-XS57nzkQssa5OTd7awDT118CX1Ugs3Yg5Q-C9Au0dMig2F9X0TFKEfp_efpckUb5WlX7T42IliX4k91N1sXeTes2MltJ2JvcOm7XQtt54Ap3UXqjI7cTDcZN0qsPCUmUwAoBzXY9YjTOLuVTS3T6RDi3WqNgILbLK_1ZooogM64Nzr3DR4yeXAQ","dp":"ddhsudpiQw1gGKRmgU-JgjrGdIsjyTKdPoACoSdoCvXgjoOmSh1gJbS2chaLPE9_1htooYiVwEC_4QcBdM3QOlRwHekjOR_n0RFez3eJF2jMnwYka_H4qZDF3LNUvIwwSNNONoWnJKd50-vxTQFOfL4dPzESsuVPi4mtGB_OGYE","dq":"PvGRC32t1MpuBpB1ooXkaY7aj8ctZWv1ibqlXWQ-lfR-6imLLpyJKQmb552UhOsARFx8veYsUwnb38i_IuxunG_JE8F0V4vKb4iI45p2X2UrzHQC-1oPhCH01OtLE8N4AlsJZ6sOFg4yMGqWbIQ76iV9s5x_YiKyFhJkC1FzHw0","e":"AQAB","kty":"RSA","n":"nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ","p":"0LmLpVVOc9Bd6ZZcnBGeyvbi1y2DMRjFfZuiMU1CwK5Q-jQkyouFbLlVxJANoqyFmClH-SUs4SWRkIxhcIEbcJ_rGDWyHOLEzD5gc0d48VT5SayH5QjDWUz4xf1FK7e_m_R7G35NedqL3HNv_XjV9phOBcW0Hf-2ZH5PMDNoBcE","q":"wh1q2mM07Qeoy52bTZwfK3Fe-Fjq0UOOZdffz-4Gv5m2L-DXAfXOUKwuCEgi0gNETtdhZonpMtOMIe4uqgTcdhWhMEbVpQCdOQDuw1y4uBzzNtJArpcfJHuDIvjz5_AMNoj3OgJoBdV6lJc95WjGBlp3oouz_ogB78qKAEhz8QU","qi":"e8tF0pisWwcZSH1j4WiGcZoYy6yXAinOfdNfdYhqC6WvCzw0y--n8-xW9CJ5JPPdJ-rXlUnOMOdyRyOtieKLrv4QvOASEMkJut0oztxlqaRxu26QyuWB1QeokJfrKfbH5OgzASOomQesPbFiU_5U7jltVfrgj0atKCcORfwM-t8"}
 predefine_priv = {"kid":"server_kid","d":"XEk6TJVSPOHU0-jfSjgSKmScDqSkUjpr8jn8cXMCmDgxnF9CCkhLEd4F-3aNXyvUNMp-_NhGaflzhEiJF1NpiStJZPLMSY53D4q6MXsuTqyNeb5zFDbqe0QlBejeHRTKSqKrowyoMAJBfKej8v_D7NpUSXO-LszKwAA5XkPL53euAIIOQuRZeCEywo6N_eCqZqzLmH9zsG5q5GMtIRNVndEarJvVWJAqPX2M5Hm4dxaqom-_dmFELeegA0jC2FAJXYIKZKFG7zByS3tafSE_NUz22PD6ZdhxtdD2rGVD6JphKDfHK8bop3ctP2U43To_iIg9swm181Pp_8C34O_OrQ","dp":"SoRqR1aoI68AX7cdOVssDRhZYTaiS-EzDJCxiiZvxZSSqNELfsKvP-o_lNkFHMHZixZOo2JxjdPbVqGfOAGillJiluJY90HxtHjwT_TzNqMyiQS9_UBGR4mROqPSgesiejShYvusNXVVrHh1q7Yvi6uHX48oKLl1f7xSPtgMWkk","dq":"LZvcMqfBzm3iw0qa32Q4Zri5ToogjooJEDOAPBb0Wd7JQZhkehVeVD5tcjdfv_mHA6J0anK7wunGKCUXWwllH6YNREZAYYYDxtaWDtl3Pqjbgzn0vMbo0ixvamh8APhXhyXHy5yMDGGkrIck3QAtc3riFYPg-DJU_QhBMYRixpE","e":"AQAB","kty":"RSA","n":"nxuARX905_3pDATluPJB5NMalvPgqc9FImgDQXZ3scpWiumVYC2disk2qSlnH8ZgBnTXvkQUyNKxfmMum9qkgHJXwKtxVoKdIVrQPy3hiC9U0tFGSvgGNeFp5qaEsm5SK8R7Y2kWWz4VEl9n0TTdmO-0D1P4co-hlk0eo4JLU95aJxpwuNafDoZDm4MZM04D4kh3ZxC_mXklT8WRQ8E-bOnkOYCfqQiniLXIHQvV7eSVgHYokhcnhK9GYaOe73gNwEdXuBQAabZsvBAasaWaPMrkfGOef9RFPt6wHDpgmpJBgSJRuAI19f7hAlJI5DeUT0TwzgU6xVfOC08sQlYVjQ","p":"z6xFoB_efvej2F5fMbBfMR93X5S-Z8MGjQnzfXPOfV6J1aCvDE2pjFx71OWtPZrIiLqm4dXQtplKW6wb-TdfquFl3XqqBDZEb2qbNBflpqD0VRQmg-wCAEJ1Lm4jKNzoPTbcrlJKeVUqClflkfXu3RElcEk9RCpOZMhT5tsm_38","q":"xCIHgCI1UdWOEBTu1R3UX_fv_vuM2EQgJ7g_JzntM0Cw2s21UxRu5KptIUYL8vx9Mo2BoLVAu7EikZdxBLdNJ0sRgkbDhhZlinRS3xFwE-PzTVy5SwwN3BLXIMmuuPv6FBy9gPJJhfD3gM2hMfDbGyapVFvCHihEhlY-hJh2cPM","qi":"cNPbo7ClUD9JWPvYHLh9AKuk56geHV_FEu7ubk1sMzHEJ3DCvGSUgMlGeLPXShz8sOLB_Wdanhpymh24n357op6WvvHvXXSZ3nNhaxCqECVUZ0mtA1X0taSik6JRoOj6iZSNaTagktaXc0Oyc0KuFB3yPDmB3POV420BAh87Qgg"}
@@ -38,8 +38,9 @@ class contract:
         jwstoken.add_signature(key_for_signature, "RS256", json_encode({"alg":"RS256", "kid":kid}), None)
         print("after sign")
         signed_payload = jwstoken.serialize()
-        print("signed:" + signed_payload)
-        response_to_client = {"key":toclient_payload, "signature":signed_payload}
+        print("get price signed:" + signed_payload)
+        response_to_client = {"content":toclient_payload, "ts_signature":signed_payload}
+        print(response_to_client)
         return  json.dumps(response_to_client)
 
 class fetch:
@@ -113,7 +114,8 @@ class fetch:
             return web.notfound
         client_public_key_in_jwk["use"] = "enc"
         public_key_enc = jwk.JWK(**client_public_key_in_jwk)
-        toclient_payload = json.dumps([{"type":"ss", "server":"1.1.1.1", "port":1984, "method":"aes-cfb-256", "key":"romanholidy3947"},{"type":"ss", "server":"2.2.1.1", "port":11984, "method":"aes-cfb-256", "key":"juventus_suck"}])
+        ss_cert_list = [{"type":"ss", "server":"1.1.1.1", "port":1984, "method":"aes-cfb-256", "key":"romanholidy3947"},{"type":"ss", "server":"2.2.1.1", "port":11984, "method":"aes-cfb-256", "key":"juventus_suck"}]
+        toclient_payload = json.dumps({"ss_cert":ss_cert_list, "ts":int(time.time())})
         jwstoken = jws.JWS(toclient_payload.encode('utf-8'))
         print("before sign")
         key_for_signature = jwk.JWK(**merge_signature_priv)

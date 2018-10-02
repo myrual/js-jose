@@ -21,9 +21,9 @@
     <script src="../dist/jose.js"></script>
 
     <script>
-        var server_pub_rsa_key_encrypt = {"e":"AQAB","kty":"RSA","n":"nxuARX905_3pDATluPJB5NMalvPgqc9FImgDQXZ3scpWiumVYC2disk2qSlnH8ZgBnTXvkQUyNKxfmMum9qkgHJXwKtxVoKdIVrQPy3hiC9U0tFGSvgGNeFp5qaEsm5SK8R7Y2kWWz4VEl9n0TTdmO-0D1P4co-hlk0eo4JLU95aJxpwuNafDoZDm4MZM04D4kh3ZxC_mXklT8WRQ8E-bOnkOYCfqQiniLXIHQvV7eSVgHYokhcnhK9GYaOe73gNwEdXuBQAabZsvBAasaWaPMrkfGOef9RFPt6wHDpgmpJBgSJRuAI19f7hAlJI5DeUT0TwzgU6xVfOC08sQlYVjQ"}
-//            { "use": "enc", "e": "AQAB", "kty": "RSA", "n": "nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ" }
-        var server_pub_rsa_key_verify = {"e":"AQAB","kty":"RSA","n":"nxuARX905_3pDATluPJB5NMalvPgqc9FImgDQXZ3scpWiumVYC2disk2qSlnH8ZgBnTXvkQUyNKxfmMum9qkgHJXwKtxVoKdIVrQPy3hiC9U0tFGSvgGNeFp5qaEsm5SK8R7Y2kWWz4VEl9n0TTdmO-0D1P4co-hlk0eo4JLU95aJxpwuNafDoZDm4MZM04D4kh3ZxC_mXklT8WRQ8E-bOnkOYCfqQiniLXIHQvV7eSVgHYokhcnhK9GYaOe73gNwEdXuBQAabZsvBAasaWaPMrkfGOef9RFPt6wHDpgmpJBgSJRuAI19f7hAlJI5DeUT0TwzgU6xVfOC08sQlYVjQ"}
+        var server_pub_rsa_key_encrypt = { "e": "AQAB", "kty": "RSA", "n": "nxuARX905_3pDATluPJB5NMalvPgqc9FImgDQXZ3scpWiumVYC2disk2qSlnH8ZgBnTXvkQUyNKxfmMum9qkgHJXwKtxVoKdIVrQPy3hiC9U0tFGSvgGNeFp5qaEsm5SK8R7Y2kWWz4VEl9n0TTdmO-0D1P4co-hlk0eo4JLU95aJxpwuNafDoZDm4MZM04D4kh3ZxC_mXklT8WRQ8E-bOnkOYCfqQiniLXIHQvV7eSVgHYokhcnhK9GYaOe73gNwEdXuBQAabZsvBAasaWaPMrkfGOef9RFPt6wHDpgmpJBgSJRuAI19f7hAlJI5DeUT0TwzgU6xVfOC08sQlYVjQ" }
+        //            { "use": "enc", "e": "AQAB", "kty": "RSA", "n": "nkSX9v8WZbd5FeE5n0oTKznmjnwN1e9UJ29gaghNbpM1GOCE0y708YXXOUvLvaI4nxHrRjq9WgRrWY_0ys_Ny0TyeyyhUmJhGk2OahwbIJ0kSb7ERTvvZ6rVXwjQ1Kge27NP9YJIX5QOZUawLRRuc6Vw4Z66BTlPZ0WrNTY96BBsQiaseR1B_PKvZgcORcFNdah62GkQRTFq05L3nheLrOKl6h4BFCP_rI8F2oQmgYjMLpumDlPZWfjA6sEckz64l1wmgPhrIodKTf4GqTOQ9K5xwGkYwdz41SUechvuz9_SSRRNjjowFdTo4s8lVK_C4S4IHJ8ulRjMhE-uzCXNxQ" }
+        var server_pub_rsa_key_verify = { "e": "AQAB", "kty": "RSA", "n": "nxuARX905_3pDATluPJB5NMalvPgqc9FImgDQXZ3scpWiumVYC2disk2qSlnH8ZgBnTXvkQUyNKxfmMum9qkgHJXwKtxVoKdIVrQPy3hiC9U0tFGSvgGNeFp5qaEsm5SK8R7Y2kWWz4VEl9n0TTdmO-0D1P4co-hlk0eo4JLU95aJxpwuNafDoZDm4MZM04D4kh3ZxC_mXklT8WRQ8E-bOnkOYCfqQiniLXIHQvV7eSVgHYokhcnhK9GYaOe73gNwEdXuBQAabZsvBAasaWaPMrkfGOef9RFPt6wHDpgmpJBgSJRuAI19f7hAlJI5DeUT0TwzgU6xVfOC08sQlYVjQ" }
         server_pub_rsa_key_verify["kid"] = "server_kid"
 
         var js_pub_key = { "kid": "hello", "use": "enc", "alg": "RSA-OAEP", "enc": "A256CBC-HS512", "e": "AQAB", "kty": "RSA", "n": "yfTdA3PJzyo2LT899lspEA8QESzDDMO-rRu7VtIKCSgBliCCI4etuVHU--2h3JXFHaNttfFTm2uA1ps1G86q90tvTol7MBqSZgD51dlBP_V5vDtdkmi_sS38Szfz_Qu6CS2-JxDmLdrBPJAXJjOW13Sz6e-cjT3TCsmV3n4zqyYbLSHOBdLpLAcH6JWtqsJE8bED68C5EZzfBtWoOXWtsNJgsGIQ2hugdh-VAm4lCPaSIOdQKGczfvSRFcsTMCKox9norysq3rfKqh0b_UBfcBDhFtFnVrCFGVtsbKV9OIf404J_QOpH8pjeyAVcocBN4TzJilrOfiDlcSvaztkaEQ" }
@@ -134,13 +134,52 @@
             return new Uint8Array(arr);
         };
 
-        const url = 'http://127.0.0.1:8080/price';
+        const ugetrl = 'http://127.0.0.1:8080/price';
         var xmlgethttp = new XMLHttpRequest();
         xmlgethttp.onreadystatechange = function () {
-            console.log("price result")
+            console.log("price result");
             console.log(xmlgethttp.responseText);
+            server_info_response = JSON.parse(xmlgethttp.responseText);
+            server_info = server_info_response["content"];
+            signature_ts = server_info_response["ts_signature"];
+            server_public_key_from_server = server_info["PublicKey"];
+            server_contract_address = server_info["ContractAddress"];
+            server_price = server_info["Price"];
+            server_ts = server_info["ts"];
+            console.log(server_public_key_from_server);
+            console.log(server_contract_address);
+            console.log(server_price);
+            console.log(server_ts);
+
+            message = JSON.parse(signature_ts)
+            var verifier = new JoseJWS.Verifier(cryptographer, message);
+            console.log("compare two kind of public key")
+            console.log(server_pub_rsa_key_verify);
+            console.log(server_public_key_from_server);
+            verifier.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
+                console.log("add server public key ok");
+                verifier.verify().then(function (result) {
+                    console.log("server public key verified");
+                    result.filter(function (value) {
+                        server_ts = parseInt(value.payload);
+                        client_ts = Date.now()/1000;
+                        diff = Math.abs(client_ts - server_ts);
+                        console.log("time stamp compare")
+                        console.log(server_ts);
+                        console.log(client_ts);
+                        console.log(diff);
+                        if(diff < 300){
+                            console.log("server is correct");
+                            console.log(JSON.stringify(value));
+                        }
+
+
+                    }).length == 0;
+                });
+            });
+            return;
         }
-        xmlgethttp.open("GET", url, false);
+        xmlgethttp.open("GET", ugetrl, false);
         xmlgethttp.send();
 
         Jose.crypto.subtle.digest({ name: "SHA-256" }, arrayFromString(js_pub_key["n"])).then(function (hashfromarray) {
@@ -195,8 +234,15 @@
                                                 verifier.verify().then(function (result) {
                                                     console.log("verifiend");
                                                     result.filter(function (value) {
-                                                        console.log(JSON.stringify(value));
-                                                        decrypttext.textContent = JSON.stringify(value)
+                                                        console.log(value);
+                                                        verified_payload = JSON.parse(value.payload);
+                                                        ss_cert = verified_payload["ss_cert"];
+                                                        ts = verified_payload["ts"];
+                                                        console.log(Date.now() - ts);
+                                                        if(ts < Date.now()){
+                                                            decrypttext.textContent = JSON.stringify(value)
+                                                        }
+
                                                     }).length == 0;
                                                 });
                                             });

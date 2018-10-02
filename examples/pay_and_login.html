@@ -166,7 +166,7 @@
                                 Jose.crypto.subtle.digest({ name: "SHA-256" }, new Uint8Array(hashfromarray)).then(function (double_hashfromarray) {
                                     var Base58_character = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
                                     var double_encoded_in_b58 = to_b58(new Uint8Array(double_hashfromarray), Base58_character);
-                                    content_to_signer = JSON.stringify({ "kid": double_encoded_in_b58, "ts": Date.now() })
+                                    content_to_signer = parseInt(Date.now()/1000).toString()
                                     var cryptographer_sign_client = new Jose.WebCryptographer();
                                     cryptographer_sign_client.setContentSignAlgorithm("RS256");
 

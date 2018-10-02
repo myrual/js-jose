@@ -91,6 +91,7 @@ class fetch:
         client_payload = json.loads(payload_from_client)
         client_public_key_in_jwk = client_payload["key"]
         client_public_key_in_jwk["use"] = "sig"
+        client_public_key_kid_payload = client_public_key_in_jwk["kid"]
         public_key_verify = jwk.JWK(**client_public_key_in_jwk)
         client_id_signature = client_payload["signature"]
         client_request = client_payload["request"]
@@ -100,9 +101,7 @@ class fetch:
         client_signature_payload = jws_verify_token.payload.decode("utf-8")
         print("verify signature of client")
         print(client_signature_payload)
-        dict_client_signature_payload = json.loads(client_signature_payload)
-        client_public_key_kid_payload = client_public_key_in_jwk["kid"]
-        ts_of_sign = dict_client_signature_payload["ts"]/1000
+        ts_of_sign = int(client_signature_payload)
         print("signature happen on ")
         print(ts_of_sign)
         current_server_ts = time.time()

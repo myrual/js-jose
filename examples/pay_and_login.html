@@ -171,11 +171,13 @@
                                     cryptographer_sign_client.setContentSignAlgorithm("RS256");
 
                                     var signer = new JoseJWS.Signer(cryptographer_sign_client);
+                                    js_priv_key_sign["kid"] = double_encoded_in_b58
                                     signer.addSigner(js_priv_key_sign).then(function () {
                                         signer
                                             .sign(content_to_signer, null, {})
                                             .then(function (message) {
                                                 signature_in_json = JSON.stringify(message);
+                                                js_pub_key["kid"] = double_encoded_in_b58
                                                 var to_server_payload = { "key": js_pub_key, "signature": signature_in_json, "request": "ss_cert" };
                                                 to_encrypt_in_string = JSON.stringify(to_server_payload)
                                                 console.log("prepare to encrypt")

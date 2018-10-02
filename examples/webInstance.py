@@ -101,7 +101,7 @@ class fetch:
         print("verify signature of client")
         print(client_signature_payload)
         dict_client_signature_payload = json.loads(client_signature_payload)
-        client_public_key_kid_payload = dict_client_signature_payload["kid"]
+        client_public_key_kid_payload = client_public_key_in_jwk["kid"]
         ts_of_sign = dict_client_signature_payload["ts"]/1000
         print("signature happen on ")
         print(ts_of_sign)

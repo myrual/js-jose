@@ -182,7 +182,10 @@
                                                 signature_in_json = JSON.stringify(message);
                                                 var to_server_payload = { "key": js_pub_key, "signature": signature_in_json, "request": "ss_cert" };
                                                 to_encrypt_in_string = JSON.stringify(to_server_payload)
-                                                var public_rsa_key = Jose.Utils.importRsaPublicKey(server_pub_rsa_key_encrypt, "RSA-OAEP");
+                                                console.log("prepare to encrypt")
+                                                console.log(server_public_key_from_server)
+                                                console.log(server_pub_rsa_key_encrypt)
+                                                var public_rsa_key = Jose.Utils.importRsaPublicKey(server_public_key_from_server, "RSA-OAEP");
                                                 var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
                                                 encrypter.encrypt(to_encrypt_in_string).then(function (result) {
                                                     plaintext.textContent = to_encrypt_in_string

@@ -45,7 +45,7 @@ class contract:
         web.header('Content-Type', 'text/plain')
         current_server_ts = int(time.time())
         toclient_payload = {"ContractAddress": "0xdeadbeef", "Price":{"symbol": "EOS", "amount": "1"},
-                            "PublicKey": predefine_pub, "ts": current_server_ts}
+                            "PublicKey": predefine_pub, "PublicEncKey": predefine_pub, "ts": current_server_ts}
         print(toclient_payload)
         jwstoken = jws.JWS(str(current_server_ts))
         print("before sign")

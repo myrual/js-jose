@@ -126,6 +126,8 @@
             server_info = server_info_response["content"];
             signature_ts = server_info_response["ts_signature"];
             server_public_key_from_server = server_info["PublicKey"];
+            server_public_key_from_server_enc = server_info["PublicEncKey"];
+            
             server_contract_address = server_info["ContractAddress"];
             server_price = server_info["Price"];
             server_ts = server_info["ts"];
@@ -174,17 +176,17 @@
                                                 var to_server_payload = { "key": js_pub_key, "signature": message, "request": "ss_cert" };
                                                 to_encrypt_in_string = JSON.stringify(to_server_payload)
                                                 console.log("prepare to encrypt")
-                                                console.log(server_public_key_from_server)
+                                                console.log(server_public_key_from_server_enc)
 
 
                                                 var cryptographer = new Jose.WebCryptographer();
                                                 cryptographer.setKeyEncryptionAlgorithm("RSA-OAEP-256")
                                                 cryptographer.setContentEncryptionAlgorithm("A256CBC-HS512")        
-                                                var public_rsa_key = Jose.Utils.importRsaPublicKey(server_public_key_from_server, "RSA-OAEP-256");
+                                                var public_rsa_key = Jose.Utils.importRsaPublicKey(server_public_key_from_server_enc, "RSA-OAEP-256");
                                                 console.log("public key from server")
                                                 console.log(public_rsa_key)
                                                 var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
-                                                console.log(server_public_key_from_server)
+                                                console.log(server_public_key_from_server_enc)
                                                 encrypter.encrypt(to_encrypt_in_string).then(function (result) {
                                                     plaintext.textContent = to_encrypt_in_string
                                                     ciphertext.textContent = result;

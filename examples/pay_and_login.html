@@ -36,12 +36,6 @@
             "p": "7y3gXWO794Gf3jr9jTptKvLC5kSOsY3w_UfWdZdq5dGYtRNJzpOriS3S26hL4MWz_446WBWuKjgc-VJ4sul-vd6uHpa2QOpcMJApvKRSktHZChA0v8wtc1HCNGJRLV5mgKw-FrcrjycX08EteMlAT45Es56cZYfHm5Xt0T0MnIk",
             "q": "2CjWpAaHqoPWxrlBxu5BTsaUnc4S-QchZuqU0d9WSiMKIKRMu7UBSLAjZbMsh18Rr7UzByih2RM99MBfgJtlm0Z9kxyLjGnkqqfVKJms5YcnmfvBltDAmAAjxpK_Exxr9bkp5IoxUTmFWeWVyHXG27u0Zfj2K18K3jpG1xa0_0k", "qi": "bx8lw3-6-LqNzlMbp4VXsHAMUQ0LdNGwFtV-2-wemd4MMVLB7BawY73AWPaaaMOpyVBuqtfvxWnCspxm2HDUTrLsfJzswDOmGCJzzaFSSoyJhdX03dS_bhALrTdyX958Y58hSv6Pt1sBdZd55KjZ4aiNV3Jatr3pbtwvFgqc1N0"
         }
-        var cryptographer = new Jose.WebCryptographer();
-
-
-
-        var private_rsa_key = Jose.Utils.importRsaPrivateKey(js_priv_key_decrypt, "RSA-OAEP");
-
         function to_b58(B, A) {
             var d = [],   //the array for storing the stream of base58 digits
                 s = "",   //the result string variable that will be returned
@@ -180,7 +174,14 @@
                                                 to_encrypt_in_string = JSON.stringify(to_server_payload)
                                                 console.log("prepare to encrypt")
                                                 console.log(server_public_key_from_server)
-                                                var public_rsa_key = Jose.Utils.importRsaPublicKey(server_public_key_from_server, "RSA-OAEP");
+
+
+                                                var cryptographer = new Jose.WebCryptographer();
+                                                cryptographer.setKeyEncryptionAlgorithm("RSA-OAEP-256")
+                                                cryptographer.setContentEncryptionAlgorithm("A256CBC-HS512")        
+                                                var public_rsa_key = Jose.Utils.importRsaPublicKey(server_public_key_from_server, "RSA-OAEP-256");
+                                                console.log("public key from server")
+                                                console.log(public_rsa_key)
                                                 var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
                                                 console.log(server_public_key_from_server)
                                                 encrypter.encrypt(to_encrypt_in_string).then(function (result) {
@@ -189,6 +190,7 @@
                                                     const url = 'http://127.0.0.1:8080/cert.info?' + "code=" + result;
                                                     var xmlhttp = new XMLHttpRequest();
                                                     xmlhttp.onreadystatechange = function () {
+                                                        var private_rsa_key = Jose.Utils.importRsaPrivateKey(js_priv_key_decrypt, "RSA-OAEP");
                                                         var decrypter = new JoseJWE.Decrypter(cryptographer, private_rsa_key);
                                                         decrypter.decrypt(xmlhttp.responseText)
                                                             .then(function (decrypted_plain_text) {

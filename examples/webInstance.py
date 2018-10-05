@@ -79,6 +79,7 @@ class fetch:
         print("-------private key-------")
         print(type(mixindata.code))
         print(len(mixindata.code))
+        print(merge_priv)
         private_key_server = jwk.JWK(**merge_priv)
         jwetoken = jwe.JWE()
         print("before decrypt")

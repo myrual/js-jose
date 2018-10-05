@@ -87,6 +87,7 @@ class fetch:
 
         print("after decrypt")
         payload_from_client = jwetoken.payload
+        print(jwetoken.jose_header)
         print(payload_from_client)
         client_payload = json.loads(payload_from_client)
         client_public_key_in_jwk = client_payload["key"]
@@ -152,6 +153,8 @@ class fetch:
             enc = "A256GCM"
 
         protected_header = {"alg": algorithm, "enc": enc, "typ": "JWE"}
+        print("protect_header")
+        print(protected_header)
         jweresult = jwe.JWE(response_with_signed_ts.encode(
             'utf-8'), recipient=public_key_enc, protected=protected_header)
         print(jweresult.serialize(True))

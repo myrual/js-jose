@@ -26,6 +26,10 @@ def base58_double_sha256_fromString(inputString):
     encoded_result = base58.b58encode(double_hash256_result).decode("utf-8")
     return encoded_result
 predefine_pub["kid"] = base58_double_sha256_fromString(predefine_pub["n"])
+
+predefine_pub_sig = {**predefine_pub, **{"alg":"RS256"}}
+predefine_pub_enc = {**predefine_pub, **{"alg":"RSA-OAEP-256", "enc":"A256CBC-HS512"}}
+
 predefine_priv["kid"] = base58_double_sha256_fromString(predefine_priv["n"])
 merge_priv = {**predefine_pub, **predefine_priv}
 merge_priv["use"] = "enc"
@@ -45,7 +49,7 @@ class contract:
         web.header('Content-Type', 'text/plain')
         current_server_ts = int(time.time())
         toclient_payload = {"ContractAddress": "0xdeadbeef", "Price":{"symbol": "EOS", "amount": "1"},
-                            "PublicKey": predefine_pub, "PublicEncKey": predefine_pub, "ts": current_server_ts}
+                            "PublicKey": predefine_pub_sig, "PublicEncKey": predefine_pub_enc, "ts": current_server_ts}
         print(toclient_payload)
         jwstoken = jws.JWS(str(current_server_ts))
         print("before sign")

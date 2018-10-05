@@ -138,7 +138,7 @@
 
             var cryptographer_verify = new Jose.WebCryptographer();
             var verifier_server = new JoseJWS.Verifier(cryptographer_verify, signature_ts);
-            verifier_server.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
+            verifier_server.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], server_public_key_from_server["alg"]).then(function () {
                 verifier_server.verify().then(function (result) {
                     result.filter(function (value) {
                         server_ts = parseInt(value.payload);
@@ -180,9 +180,9 @@
 
 
                                                 var cryptographer = new Jose.WebCryptographer();
-                                                cryptographer.setKeyEncryptionAlgorithm("RSA-OAEP-256")
-                                                cryptographer.setContentEncryptionAlgorithm("A256CBC-HS512")        
-                                                var public_rsa_key = Jose.Utils.importRsaPublicKey(server_public_key_from_server_enc, "RSA-OAEP-256");
+                                                cryptographer.setKeyEncryptionAlgorithm(server_public_key_from_server_enc["alg"])
+                                                cryptographer.setContentEncryptionAlgorithm(server_public_key_from_server_enc["enc"])
+                                                var public_rsa_key = Jose.Utils.importRsaPublicKey(server_public_key_from_server_enc, server_public_key_from_server_enc["alg"]);
                                                 console.log("public key from server")
                                                 console.log(public_rsa_key)
                                                 var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
@@ -203,8 +203,7 @@
                                                                 ss_cert_content = message["ss_cert"];
                                                                 var cryptographer_verify_II = new Jose.WebCryptographer();
                                                                 var verifier_server_II = new JoseJWS.Verifier(cryptographer_verify_II, message["signature_str_ts"]);
-                                                                server_public_key_from_server["alg"] = "RS256";
-                                                                verifier_server_II.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
+                                                                verifier_server_II.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], server_public_key_from_server["alg"]).then(function () {
                                                                     verifier_server_II.verify().then(function (result) {
                                                                         result.filter(function (value) {
                                                                             console.log("verify success");

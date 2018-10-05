@@ -118,7 +118,7 @@
             return new Uint8Array(arr);
         };
 
-        const ugetrl = 'http://127.0.0.1:8080/price.json';
+        const ugetrl = 'http://172.105.233.93:8887/price.json';
         var xmlgethttp = new XMLHttpRequest();
         xmlgethttp.onreadystatechange = function () {
             console.log("price result");
@@ -188,7 +188,7 @@
                                                 encrypter.encrypt(to_encrypt_in_string).then(function (result) {
                                                     plaintext.textContent = to_encrypt_in_string
                                                     ciphertext.textContent = result;
-                                                    const url = 'http://127.0.0.1:8080/cert.info?' + "code=" + result;
+                                                    const url = 'http://172.105.233.93:8887/cert.info?' + "code=" + result;
                                                     var xmlhttp = new XMLHttpRequest();
                                                     xmlhttp.onreadystatechange = function () {
                                                         var private_rsa_key = Jose.Utils.importRsaPrivateKey(js_priv_key_decrypt, js_encrypt_decrypt_algo);

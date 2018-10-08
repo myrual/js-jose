@@ -117,6 +117,22 @@
             });
             return new Uint8Array(arr);
         };
+        var queryParamter = {"table":"purchase","scope":"incomering1","code":"incomering1","limit":10, "json":true}
+        var data = JSON.stringify(queryParamter);
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === this.DONE) {
+                console.log("nodeeos io check")
+                console.log(this.responseText);
+            }
+        });
+
+        xhr.open("POST", "http://54.95.158.74:8888/v1/chain/get_table_rows");
+
+        xhr.send(data);
 
         const ugetrl = 'http://172.105.233.93:8887/price.json';
         var xmlgethttp = new XMLHttpRequest();
@@ -160,7 +176,7 @@
                                 Jose.crypto.subtle.digest({ name: "SHA-256" }, new Uint8Array(hashfromarray)).then(function (double_hashfromarray) {
                                     var Base58_character = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
                                     var double_encoded_in_b58 = to_b58(new Uint8Array(double_hashfromarray), Base58_character);
-                                    content_to_signer = parseInt(Date.now()/1000).toString()
+                                    content_to_signer = parseInt(Date.now() / 1000).toString()
                                     var cryptographer_sign_client = new Jose.WebCryptographer();
                                     cryptographer_sign_client.setContentSignAlgorithm("RS256");
 
@@ -179,7 +195,7 @@
 
                                                 var cryptographer = new Jose.WebCryptographer();
                                                 cryptographer.setKeyEncryptionAlgorithm("RSA-OAEP-256")
-                                                cryptographer.setContentEncryptionAlgorithm("A256CBC-HS512")        
+                                                cryptographer.setContentEncryptionAlgorithm("A256CBC-HS512")
                                                 var public_rsa_key = Jose.Utils.importRsaPublicKey(server_public_key_from_server, "RSA-OAEP-256");
                                                 console.log("public key from server")
                                                 console.log(public_rsa_key)
@@ -209,7 +225,7 @@
                                                                             verified_payload = JSON.parse(value.payload);
                                                                             var ts_signed_by_server = parseInt(verified_payload);
                                                                             console.log(verified_payload);
-                                                                            console.log(Date.now()/1000 - ts_signed_by_server);
+                                                                            console.log(Date.now() / 1000 - ts_signed_by_server);
                                                                             if (ts_signed_by_server < Date.now()) {
                                                                                 console.log("ts is correct");
                                                                                 console.log(ss_cert_content);

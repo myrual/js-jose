@@ -117,7 +117,7 @@
             });
             return new Uint8Array(arr);
         };
-        var queryParamter = {"table":"purchase","scope":"incomering1","code":"incomering1","limit":10, "json":true}
+        var queryParamter = {"table":"srvportal","scope":"babb3","code":"babb3","limit":10, "json":true}
         var data = JSON.stringify(queryParamter);
 
         var xhr = new XMLHttpRequest();
@@ -127,6 +127,13 @@
             if (this.readyState === this.DONE) {
                 console.log("nodeeos io check")
                 console.log(this.responseText);
+                var eos_table_row = JSON.parse(this.responseText)
+                var service_rows = eos_table_row["rows"]
+                console.log("all service are read out")
+                service_rows.forEach(element => {
+                    console.log(element.setup_time)
+                    console.log(element.service_info)
+                });
             }
         });
 

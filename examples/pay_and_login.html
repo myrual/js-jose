@@ -117,7 +117,7 @@
             });
             return new Uint8Array(arr);
         };
-        var queryParamter = {"table":"srvportal","scope":"babb3","code":"babb3","limit":10, "json":true}
+        var queryParamter = { "table": "srvportal", "scope": "babb3", "code": "babb3", "limit": 10, "json": true }
         var data = JSON.stringify(queryParamter);
 
         var xhr = new XMLHttpRequest();
@@ -129,11 +129,151 @@
                 console.log(this.responseText);
                 var eos_table_row = JSON.parse(this.responseText)
                 var service_rows = eos_table_row["rows"]
-                console.log("all service are read out")
-                service_rows.forEach(element => {
-                    console.log(element.setup_time)
-                    console.log(element.service_info)
-                });
+                var load_url = 'http://172.105.233.93:8887'
+                if (service_rows.length == 0) {
+
+                } else {
+                    console.log("all service are read out")
+                    service_rows.forEach(element => {
+                        console.log(element.setup_time)
+                        console.log(element.service_info)
+                    });
+                    console.log("fetch first")
+                    var thisvalue = service_rows[0]
+                    load_url = service_rows[0].service_info
+                }
+                
+                var price_url = load_url + '/price.json'
+                var cert_url = load_url + '/cert.info?'
+                var xmlgethttp = new XMLHttpRequest();
+                xmlgethttp.onreadystatechange = function () {
+                    console.log("price result");
+                    server_info_response = JSON.parse(xmlgethttp.responseText);
+                    server_info = server_info_response["content"];
+                    signature_ts = server_info_response["ts_signature"];
+                    server_public_key_from_server = server_info["PublicKey"];
+                    server_contract_address = server_info["ContractAddress"];
+                    server_price = server_info["Price"];
+                    server_ts = server_info["ts"];
+                    console.log(server_public_key_from_server);
+                    console.log(server_contract_address);
+                    console.log(server_price);
+                    console.log(server_ts);
+
+                    var cryptographer_verify = new Jose.WebCryptographer();
+                    var verifier_server = new JoseJWS.Verifier(cryptographer_verify, signature_ts);
+                    verifier_server.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
+                        verifier_server.verify().then(function (result) {
+                            result.filter(function (value) {
+                                server_ts = parseInt(value.payload);
+                                client_ts = Date.now() / 1000;
+                                diff = Math.abs(client_ts - server_ts);
+                                console.log("time stamp compare")
+                                console.log(server_ts);
+                                console.log(client_ts);
+                                console.log(diff);
+                                if (diff < 300) {
+                                    console.log("server is correct");
+                                    console.log(JSON.stringify(value));
+                                    Jose.crypto.subtle.digest({ name: "SHA-256" }, arrayFromString(js_pub_key["n"])).then(function (hashfromarray) {
+                                        console.log("hash of public key array converted from string");
+                                        console.log(js_pub_key["n"])
+                                        console.log(new Uint8Array(hashfromarray));
+                                        console.log("b58 encoding");
+                                        var Base58_character = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+                                        var encoded_in_b58 = to_b58(new Uint8Array(hashfromarray), Base58_character);
+                                        console.log(encoded_in_b58);
+                                        Jose.crypto.subtle.digest({ name: "SHA-256" }, new Uint8Array(hashfromarray)).then(function (double_hashfromarray) {
+                                            var Base58_character = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+                                            var double_encoded_in_b58 = to_b58(new Uint8Array(double_hashfromarray), Base58_character);
+                                            content_to_signer = parseInt(Date.now() / 1000).toString()
+                                            var cryptographer_sign_client = new Jose.WebCryptographer();
+                                            cryptographer_sign_client.setContentSignAlgorithm("RS256");
+
+                                            var signer = new JoseJWS.Signer(cryptographer_sign_client);
+                                            js_priv_key_sign["kid"] = double_encoded_in_b58
+                                            signer.addSigner(js_priv_key_sign).then(function () {
+                                                signer
+                                                    .sign(content_to_signer, null, {})
+                                                    .then(function (message) {
+                                                        js_pub_key["kid"] = double_encoded_in_b58
+                                                        var to_server_payload = { "key": js_pub_key, "signature": message, "request": "ss_cert" };
+                                                        to_encrypt_in_string = JSON.stringify(to_server_payload)
+                                                        console.log("prepare to encrypt")
+                                                        console.log(server_public_key_from_server)
+
+
+                                                        var cryptographer = new Jose.WebCryptographer();
+                                                        cryptographer.setKeyEncryptionAlgorithm("RSA-OAEP-256")
+                                                        cryptographer.setContentEncryptionAlgorithm("A256CBC-HS512")
+                                                        var public_rsa_key = Jose.Utils.importRsaPublicKey(server_public_key_from_server, "RSA-OAEP-256");
+                                                        console.log("public key from server")
+                                                        console.log(public_rsa_key)
+                                                        var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
+                                                        console.log(server_public_key_from_server)
+                                                        encrypter.encrypt(to_encrypt_in_string).then(function (result) {
+                                                            plaintext.textContent = to_encrypt_in_string
+                                                            ciphertext.textContent = result;
+                                                            const url = cert_url + "code=" + result;
+                                                            var xmlhttp = new XMLHttpRequest();
+                                                            xmlhttp.onreadystatechange = function () {
+                                                                var private_rsa_key = Jose.Utils.importRsaPrivateKey(js_priv_key_decrypt, js_encrypt_decrypt_algo);
+                                                                var decrypter = new JoseJWE.Decrypter(cryptographer, private_rsa_key);
+                                                                decrypter.decrypt(xmlhttp.responseText)
+                                                                    .then(function (decrypted_plain_text) {
+                                                                        decrypttext.textContent = decrypted_plain_text
+                                                                        message = JSON.parse(decrypted_plain_text)
+                                                                        console.log(message)
+                                                                        ss_cert_content = message["ss_cert"];
+                                                                        var cryptographer_verify_II = new Jose.WebCryptographer();
+                                                                        var verifier_server_II = new JoseJWS.Verifier(cryptographer_verify_II, message["signature_str_ts"]);
+                                                                        server_public_key_from_server["alg"] = "RS256";
+                                                                        verifier_server_II.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
+                                                                            verifier_server_II.verify().then(function (result) {
+                                                                                result.filter(function (value) {
+                                                                                    console.log("verify success");
+                                                                                    verified_payload = JSON.parse(value.payload);
+                                                                                    var ts_signed_by_server = parseInt(verified_payload);
+                                                                                    console.log(verified_payload);
+                                                                                    console.log(Date.now() / 1000 - ts_signed_by_server);
+                                                                                    if (ts_signed_by_server < Date.now()) {
+                                                                                        console.log("ts is correct");
+                                                                                        console.log(ss_cert_content);
+                                                                                    }
+
+                                                                                }).length == 0;
+                                                                            });
+                                                                        });
+                                                                    }).catch(function (err) {
+                                                                        error.textContent = err;
+                                                                    });
+
+                                                            }
+                                                            xmlhttp.open("GET", url, false);
+                                                            xmlhttp.send();
+
+                                                        }).catch(function (err) {
+                                                            error.textContent = err;
+                                                        });
+                                                    })
+                                                    .catch(function (err) {
+                                                        console.error(err);
+                                                    });
+                                            });
+                                        });
+                                    });
+
+                                }
+
+
+                            }).length == 0;
+                        });
+                    });
+                    return;
+                }
+                console.log(price_url)
+                xmlgethttp.open("GET", price_url, false);
+                xmlgethttp.send();
             }
         });
 
@@ -141,135 +281,7 @@
 
         xhr.send(data);
 
-        const ugetrl = 'http://172.105.233.93:8887/price.json';
-        var xmlgethttp = new XMLHttpRequest();
-        xmlgethttp.onreadystatechange = function () {
-            console.log("price result");
-            server_info_response = JSON.parse(xmlgethttp.responseText);
-            server_info = server_info_response["content"];
-            signature_ts = server_info_response["ts_signature"];
-            server_public_key_from_server = server_info["PublicKey"];
-            server_contract_address = server_info["ContractAddress"];
-            server_price = server_info["Price"];
-            server_ts = server_info["ts"];
-            console.log(server_public_key_from_server);
-            console.log(server_contract_address);
-            console.log(server_price);
-            console.log(server_ts);
 
-            var cryptographer_verify = new Jose.WebCryptographer();
-            var verifier_server = new JoseJWS.Verifier(cryptographer_verify, signature_ts);
-            verifier_server.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
-                verifier_server.verify().then(function (result) {
-                    result.filter(function (value) {
-                        server_ts = parseInt(value.payload);
-                        client_ts = Date.now() / 1000;
-                        diff = Math.abs(client_ts - server_ts);
-                        console.log("time stamp compare")
-                        console.log(server_ts);
-                        console.log(client_ts);
-                        console.log(diff);
-                        if (diff < 300) {
-                            console.log("server is correct");
-                            console.log(JSON.stringify(value));
-                            Jose.crypto.subtle.digest({ name: "SHA-256" }, arrayFromString(js_pub_key["n"])).then(function (hashfromarray) {
-                                console.log("hash of public key array converted from string");
-                                console.log(js_pub_key["n"])
-                                console.log(new Uint8Array(hashfromarray));
-                                console.log("b58 encoding");
-                                var Base58_character = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-                                var encoded_in_b58 = to_b58(new Uint8Array(hashfromarray), Base58_character);
-                                console.log(encoded_in_b58);
-                                Jose.crypto.subtle.digest({ name: "SHA-256" }, new Uint8Array(hashfromarray)).then(function (double_hashfromarray) {
-                                    var Base58_character = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-                                    var double_encoded_in_b58 = to_b58(new Uint8Array(double_hashfromarray), Base58_character);
-                                    content_to_signer = parseInt(Date.now() / 1000).toString()
-                                    var cryptographer_sign_client = new Jose.WebCryptographer();
-                                    cryptographer_sign_client.setContentSignAlgorithm("RS256");
-
-                                    var signer = new JoseJWS.Signer(cryptographer_sign_client);
-                                    js_priv_key_sign["kid"] = double_encoded_in_b58
-                                    signer.addSigner(js_priv_key_sign).then(function () {
-                                        signer
-                                            .sign(content_to_signer, null, {})
-                                            .then(function (message) {
-                                                js_pub_key["kid"] = double_encoded_in_b58
-                                                var to_server_payload = { "key": js_pub_key, "signature": message, "request": "ss_cert" };
-                                                to_encrypt_in_string = JSON.stringify(to_server_payload)
-                                                console.log("prepare to encrypt")
-                                                console.log(server_public_key_from_server)
-
-
-                                                var cryptographer = new Jose.WebCryptographer();
-                                                cryptographer.setKeyEncryptionAlgorithm("RSA-OAEP-256")
-                                                cryptographer.setContentEncryptionAlgorithm("A256CBC-HS512")
-                                                var public_rsa_key = Jose.Utils.importRsaPublicKey(server_public_key_from_server, "RSA-OAEP-256");
-                                                console.log("public key from server")
-                                                console.log(public_rsa_key)
-                                                var encrypter = new JoseJWE.Encrypter(cryptographer, public_rsa_key);
-                                                console.log(server_public_key_from_server)
-                                                encrypter.encrypt(to_encrypt_in_string).then(function (result) {
-                                                    plaintext.textContent = to_encrypt_in_string
-                                                    ciphertext.textContent = result;
-                                                    const url = 'http://172.105.233.93:8887/cert.info?' + "code=" + result;
-                                                    var xmlhttp = new XMLHttpRequest();
-                                                    xmlhttp.onreadystatechange = function () {
-                                                        var private_rsa_key = Jose.Utils.importRsaPrivateKey(js_priv_key_decrypt, js_encrypt_decrypt_algo);
-                                                        var decrypter = new JoseJWE.Decrypter(cryptographer, private_rsa_key);
-                                                        decrypter.decrypt(xmlhttp.responseText)
-                                                            .then(function (decrypted_plain_text) {
-                                                                decrypttext.textContent = decrypted_plain_text
-                                                                message = JSON.parse(decrypted_plain_text)
-                                                                console.log(message)
-                                                                ss_cert_content = message["ss_cert"];
-                                                                var cryptographer_verify_II = new Jose.WebCryptographer();
-                                                                var verifier_server_II = new JoseJWS.Verifier(cryptographer_verify_II, message["signature_str_ts"]);
-                                                                server_public_key_from_server["alg"] = "RS256";
-                                                                verifier_server_II.addRecipient(server_public_key_from_server, server_public_key_from_server["kid"], "RS256").then(function () {
-                                                                    verifier_server_II.verify().then(function (result) {
-                                                                        result.filter(function (value) {
-                                                                            console.log("verify success");
-                                                                            verified_payload = JSON.parse(value.payload);
-                                                                            var ts_signed_by_server = parseInt(verified_payload);
-                                                                            console.log(verified_payload);
-                                                                            console.log(Date.now() / 1000 - ts_signed_by_server);
-                                                                            if (ts_signed_by_server < Date.now()) {
-                                                                                console.log("ts is correct");
-                                                                                console.log(ss_cert_content);
-                                                                            }
-
-                                                                        }).length == 0;
-                                                                    });
-                                                                });
-                                                            }).catch(function (err) {
-                                                                error.textContent = err;
-                                                            });
-
-                                                    }
-                                                    xmlhttp.open("GET", url, false);
-                                                    xmlhttp.send();
-
-                                                }).catch(function (err) {
-                                                    error.textContent = err;
-                                                });
-                                            })
-                                            .catch(function (err) {
-                                                console.error(err);
-                                            });
-                                    });
-                                });
-                            });
-
-                        }
-
-
-                    }).length == 0;
-                });
-            });
-            return;
-        }
-        xmlgethttp.open("GET", ugetrl, false);
-        xmlgethttp.send();
 
 
 

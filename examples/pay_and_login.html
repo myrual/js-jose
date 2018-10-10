@@ -117,7 +117,10 @@
             });
             return new Uint8Array(arr);
         };
-        var queryParamter = { "table": "srvportal", "scope": "babb3", "code": "babb3", "limit": 10, "json": true }
+        var contract_owner = "babb3"
+        var table_owner_in_contract = "babb3"
+        var table_name = "srvportal"
+        var queryParamter = { "table": table_name, "scope": table_owner_in_contract, "code": contract_owner, "limit": 10, "json": true }
         var data = JSON.stringify(queryParamter);
 
         var xhr = new XMLHttpRequest();

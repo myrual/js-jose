@@ -121,7 +121,7 @@ class fetch:
                 "the signature is verified by client's public key, the payload is same as my calculated result")
         else:
             return web.notfound
-        if client_request == "ss_cert":
+        if client_request == "my_subscribe":
             print("got your command")
         else:
             return web.notfound
@@ -142,7 +142,7 @@ class fetch:
         print("after sign")
         signed_payload = json.loads(jwstoken.serialize())
         response_with_signed_ts = json.dumps(
-            {"ss_cert": ss_cert_list, "ts": ts_server, "signature_str_ts": signed_payload})
+            {"service_type":"proxy", "service_content":{"server_list": ss_cert_list}, "ts": ts_server, "signature_str_ts": signed_payload})
         if "alg" in client_public_key_in_jwk:
             algorithm = client_public_key_in_jwk["alg"]
         else:

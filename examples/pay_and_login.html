@@ -146,8 +146,8 @@
                     load_url = service_rows[0].service_info
                 }
                 
-                var price_url = load_url + '/price.json'
-                var cert_url = load_url + '/cert.info?'
+                var price_url = 'http://127.0.0.1:8080' + '/price.json'
+                var cert_url = 'http://127.0.0.1:8080' + '/cert.info?'
                 var xmlgethttp = new XMLHttpRequest();
                 xmlgethttp.onreadystatechange = function () {
                     console.log("price result");
@@ -200,7 +200,7 @@
                                                     .sign(content_to_signer, null, {})
                                                     .then(function (message) {
                                                         js_pub_key["kid"] = double_encoded_in_b58
-                                                        var to_server_payload = { "key": js_pub_key, "signature": message, "request": "ss_cert" };
+                                                        var to_server_payload = { "key": js_pub_key, "signature": message, "request": "my_subscribe" };
                                                         to_encrypt_in_string = JSON.stringify(to_server_payload)
                                                         console.log("prepare to encrypt")
                                                         console.log(server_public_key_from_server)
@@ -224,10 +224,11 @@
                                                                 var decrypter = new JoseJWE.Decrypter(cryptographer, private_rsa_key);
                                                                 decrypter.decrypt(xmlhttp.responseText)
                                                                     .then(function (decrypted_plain_text) {
-                                                                        decrypttext.textContent = decrypted_plain_text
+
                                                                         message = JSON.parse(decrypted_plain_text)
                                                                         console.log(message)
-                                                                        ss_cert_content = message["ss_cert"];
+                                                                        var service_type = message["service_type"];
+                                                                        var service_content = message["service_content"];
                                                                         var cryptographer_verify_II = new Jose.WebCryptographer();
                                                                         var verifier_server_II = new JoseJWS.Verifier(cryptographer_verify_II, message["signature_str_ts"]);
                                                                         server_public_key_from_server["alg"] = "RS256";
@@ -241,7 +242,9 @@
                                                                                     console.log(Date.now() / 1000 - ts_signed_by_server);
                                                                                     if (ts_signed_by_server < Date.now()) {
                                                                                         console.log("ts is correct");
-                                                                                        console.log(ss_cert_content);
+                                                                                        console.log(service_type);
+                                                                                        console.log(service_content);
+                                                                                        decrypttext.textContent = JSON.stringify(service_content)
                                                                                     }
 
                                                                                 }).length == 0;

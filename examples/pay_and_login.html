@@ -145,7 +145,7 @@
                     var thisvalue = service_rows[0]
                     load_url = service_rows[0].service_info
                 }
-                
+                load_url = "http://127.0.0.1:8080"
                 var price_url = load_url + '/price.json'
                 var cert_url = load_url + '/cert.info?'
                 var xmlgethttp = new XMLHttpRequest();
@@ -243,7 +243,13 @@
                                                                                     if (ts_signed_by_server < Date.now()) {
                                                                                         console.log("ts is correct");
                                                                                         console.log(service_type);
-                                                                                        console.log(service_content);
+                                                                                        var proxy_list = service_content["server_list"]
+                                                                                        console.log(proxy_list);
+                                                                                        proxy_list.forEach(element => {
+                                                                                            console.log(element.type)
+                                                                                            console.log(element.server_name)
+                                                                                            console.log(element.config)
+                                                                                        });
                                                                                         decrypttext.textContent = JSON.stringify(service_content)
                                                                                     }
 

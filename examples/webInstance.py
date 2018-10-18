@@ -127,8 +127,10 @@ class fetch:
             return web.notfound
         client_public_key_in_jwk["use"] = "enc"
         public_key_enc = jwk.JWK(**client_public_key_in_jwk)
-        ss_cert_list = [{"type": "ss", "server": "1.1.1.1", "port": 1984, "method": "aes-cfb-256", "key": "romanholidy3947"},
-                        {"type": "ss", "server": "2.2.1.1", "port": 11984, "method": "aes-cfb-256", "key": "juventus_suck"}]
+        ss_cert_list = [{"type": "ss", "server_name":"hello", "config":{"address": "1.1.1.1", "port": 1984, "method": "aes-cfb-256", "key": "romanholidy3947"}},
+                        {"type": "socks5", "server_name":"world", "config":{"address": "2.2.1.1", "port": 11984, "username": "tomhanks", "password": "pass23hljhsdf"}},
+                        {"type": "https", "server_name":"fish", "config":{"address": "3.3.3.3", "port": 14455, "username": "tomcruse", "password": "pass5767lskljdf"}}
+                        ]
         ts_server = int(time.time())
         jwstoken = jws.JWS(str(ts_server).encode('utf-8'))
         print("before sign")

@@ -146,8 +146,8 @@
                     load_url = service_rows[0].service_info
                 }
                 
-                var price_url = 'http://127.0.0.1:8080' + '/price.json'
-                var cert_url = 'http://127.0.0.1:8080' + '/cert.info?'
+                var price_url = load_url + '/price.json'
+                var cert_url = load_url + '/cert.info?'
                 var xmlgethttp = new XMLHttpRequest();
                 xmlgethttp.onreadystatechange = function () {
                     console.log("price result");
